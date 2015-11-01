@@ -1,0 +1,1 @@
+[{"id":"melee_auto_attack","slot":0,"type":0,"filter":0,"strategy":0,"title":"Melee","cooldown":{"min":0,"max":0},"effects":[0]}]

@@ -1,0 +1,1 @@
+[{"id":0,"level":0,"title":"rename me","triggered_status":0,"chance":{"min":0,"max":0},"power":{"min":0,"max":0}}]
