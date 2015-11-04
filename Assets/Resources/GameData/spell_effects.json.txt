@@ -1,1 +1,0 @@
-[{"id":"apply_weapon_dmg_1","level":1,"title":"eff_wep_dmg","handler":0,"triggered_status":0,"chance":{"min":0,"max":0},"power":{"min":0,"max":0}}]

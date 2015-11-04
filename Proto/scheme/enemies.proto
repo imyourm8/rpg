@@ -1,6 +1,0 @@
-package enemies;
-
-message Enemy
-{
-	
-}
