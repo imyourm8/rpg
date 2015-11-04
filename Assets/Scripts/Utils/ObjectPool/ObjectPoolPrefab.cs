@@ -29,7 +29,9 @@ namespace LootQuest.Utils.ObjectPool
 		
 		protected override GameObject CreateObject()
         {
-            return GameObject.Instantiate(prefab_);
+			var obj = GameObject.Instantiate (prefab_);
+			obj.SetActive (false);
+			return obj;
         }
     }
 }

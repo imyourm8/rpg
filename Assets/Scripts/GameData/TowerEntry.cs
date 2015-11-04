@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace LootQuest.GameData
 {
@@ -7,10 +8,10 @@ namespace LootQuest.GameData
 	{
 		public TowerEntry()
 		{
-			LevelRange = new LootQuest.Utils.Range<long> (0, 0);
+			LevelRange = new LootQuest.Utils.Range<int> (0, 0);
 		}
 
-		public Utils.Range<long> LevelRange
+		public Utils.Range<int> LevelRange
 		{ get; set; }
 
 		public float EnemyHpMultiplier
@@ -18,5 +19,8 @@ namespace LootQuest.GameData
 
 		public float EnemyDamageMultiplier
 		{ get; set; } 
+
+		public List<EnemyTableEntry> EnemyTables = new List<EnemyTableEntry>();
+		public Utils.Range<int> groupCount = new LootQuest.Utils.Range<int>();
 	}
 }

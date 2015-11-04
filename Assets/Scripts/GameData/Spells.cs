@@ -13,7 +13,9 @@ namespace LootQuest.GameData
 
 		public SpellEntry GetEntry(string id)
 		{
-			return entries_ [id];
+			SpellEntry entry;
+			entries_.TryGetValue (id, out entry);
+			return entry;
 		}
 
 		public void Load()
@@ -41,7 +43,7 @@ namespace LootQuest.GameData
 
 					foreach(var eff in spell["effects"].list)
 					{
-						entry.effects.Add((LootQuest.Game.Spells.SpellEffects.SpellEffectID)eff.i);
+						entry.effects.Add(eff.str);
 					}
 
 					entries_.Add(entry.ID, entry);
@@ -74,7 +76,7 @@ namespace LootQuest.GameData
 
 				foreach(var eff in spell.effects)
 				{
-					effects.Add((int)eff);
+					effects.Add(eff);
 				}
 			}
 

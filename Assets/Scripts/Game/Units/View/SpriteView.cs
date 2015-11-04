@@ -10,15 +10,5 @@ namespace LootQuest.Game.Units.View
 
 		[SerializeField]
 		private Animator animator_;
-
-		// Use this for initialization
-		void Start () {
-		
-		}
-		
-		// Update is called once per frame
-		void Update () {
-		
-		}
 	}
 }

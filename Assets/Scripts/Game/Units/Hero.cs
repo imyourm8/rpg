@@ -13,9 +13,9 @@ namespace LootQuest.Game.Units
 			foreach (var stat in entry.Stats) 
 			{
 				stats_.Get(stat.ID).SetValue(stat.Value);
-			}
-
-			stats_.Get (LootQuest.Game.Attributes.AttributeID.AttackRange).SetValue (-1.0f);
+			} 
+			 
+			stats_.Get (LootQuest.Game.Attributes.AttributeID.AttackRange).SetValue (39.0f);
 
 			AI = Factory.AIFactory.Instance.Create (LootQuest.Game.Units.AI.Type.Basic);
 		}

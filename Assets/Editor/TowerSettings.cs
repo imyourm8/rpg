@@ -89,23 +89,34 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 		EditorGUILayout.BeginHorizontal ();
 		GUILayout.Label ("Level ", EditorStyles.label);
 		EditorGUILayout.Separator ();
-		lvlRange.Min = EditorHelper.DrawTextfieldValue(tower_.LevelRange.Min);
+		lvlRange.Min = EditorGUILayout.IntField(tower_.LevelRange.Min);
 		GUILayout.Label ("-", EditorStyles.label);
-		lvlRange.Max = EditorHelper.DrawTextfieldValue(tower_.LevelRange.Max);
+		lvlRange.Max = EditorGUILayout.IntField(tower_.LevelRange.Max);
 		EditorGUILayout.EndHorizontal ();
 		tower_.LevelRange = lvlRange;
 
 		EditorGUILayout.BeginHorizontal ();
 		GUILayout.Label ("HP multipler", EditorStyles.label);
 		EditorGUILayout.Separator ();
-		tower_.EnemyHpMultiplier = EditorHelper.DrawTextfieldValue(tower_.EnemyHpMultiplier);
+		tower_.EnemyHpMultiplier = EditorGUILayout.FloatField(tower_.EnemyHpMultiplier);
 		EditorGUILayout.EndHorizontal ();
 
 		EditorGUILayout.BeginHorizontal ();
 		GUILayout.Label ("Damage multipler", EditorStyles.label);
 		EditorGUILayout.Separator ();
-		tower_.EnemyDamageMultiplier = EditorHelper.DrawTextfieldValue(tower_.EnemyDamageMultiplier);
+		tower_.EnemyDamageMultiplier = EditorGUILayout.FloatField(tower_.EnemyDamageMultiplier);
 		EditorGUILayout.EndHorizontal ();
+		
+		EditorGUILayout.LabelField("Enemy tables");
+		EditorGUILayout.BeginHorizontal ();
+
+		EditorGUILayout.EndHorizontal ();
+		EditorGUI.indentLevel++;
+		foreach (var table in tower_.EnemyTables) 
+		{
+
+		}
+		EditorGUI.indentLevel--;
 
 		EditorGUILayout.EndVertical ();
 	}

@@ -10,7 +10,7 @@ namespace LootQuest.GameData
 		public int level = 1;
 		public string ID = "unique_id";
 		public string titleID = "rename me";
-		public List<Game.Spells.SpellEffects.SpellEffectID> effects;
+		public List<string> effects;
 
 		public Game.Spells.SlotStype slot;
 		public Game.Spells.SpellType type;
@@ -22,13 +22,14 @@ namespace LootQuest.GameData
 
 		public SpellEntry()
 		{
-			effects = new List<LootQuest.Game.Spells.SpellEffects.SpellEffectID> ();
+			effects = new List<string> ();
 		}
 
 		public SpellEntry Copy()
 		{
 			var entry = (SpellEntry)this.MemberwiseClone ();
-			entry.effects = new List<LootQuest.Game.Spells.SpellEffects.SpellEffectID> ();
+			entry.effects = new List<string> ();
+			entry.cooldown = cooldown.Copy ();
 			foreach (var eff in effects) 
 			{
 				entry.effects.Add(eff);

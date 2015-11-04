@@ -23,7 +23,7 @@ namespace LootQuest.GameData
 					var model = new TowerEntry();
 					model.EnemyDamageMultiplier = tower["enemy_dmg_mult"].f;
 					model.EnemyHpMultiplier = tower["enemy_hp_mult"].f;
-					model.LevelRange = new LootQuest.Utils.Range<long>(tower["lvl_min"].i, tower["lvl_max"].i);
+					model.LevelRange = new LootQuest.Utils.Range<int>((int)tower["lvl_min"].i, (int)tower["lvl_max"].i);
 
 					Data.Add(model);
 				}

@@ -1,1 +1,1 @@
-[{"id":"melee_auto_attack","slot":0,"type":0,"filter":0,"strategy":0,"title":"Melee","cooldown":{"min":0,"max":0},"effects":[0]}]
+[{"id":"melee_auto_attack","slot":0,"type":0,"filter":0,"strategy":1,"title":"rename me","cooldown":{"min":0,"max":0},"level":1,"effects":["apply_weapon_dmg_1"]},{"id":"melee_slash_1","slot":1,"type":0,"filter":0,"strategy":1,"title":"rename me","cooldown":{"min":10,"max":15},"level":1,"effects":["apply_weapon_dmg_1"]}]

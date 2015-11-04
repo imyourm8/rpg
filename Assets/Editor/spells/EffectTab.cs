@@ -21,6 +21,7 @@ public class EffectTab
 	{
 		LootQuest.GameData.Effects.Instance.Load ();
 		effects_ = LootQuest.GameData.Effects.Instance.Data;
+		SpellTab.Instance ().RefreshEffectList ();
 	}
 
 	public void GUI()
@@ -75,7 +76,7 @@ public class EffectTab
 		for (int i = 0; i < count; ++i) 
 		{
 			var effect = effects_[i];
-			var title = effect.handler.ToString();
+			var title = effect.id;
 			title += " Lv:"+effect.level.ToString();
 			if (GUILayout.Button (title, EditorHelper.ListSkin(effect==currentEffect_))) 
 			{
@@ -97,7 +98,13 @@ public class EffectTab
 	{
 		bool refreshEffectList = false;
 
-		EditorGUILayout.BeginVertical (GUILayout.Width (300));
+		EditorGUILayout.BeginVertical (GUILayout.Width (600));
+
+		EditorGUILayout.BeginHorizontal ();
+		EditorGUILayout.LabelField ("ID");
+		EditorGUILayout.Separator ();
+		currentEffect_.id = EditorGUILayout.TextField (currentEffect_.id);
+		EditorGUILayout.EndHorizontal ();
 
 		EditorGUILayout.BeginHorizontal ();
 		EditorGUILayout.LabelField ("Title");
@@ -125,17 +132,8 @@ public class EffectTab
 		currentEffect_.triggeredStatus = (LootQuest.Game.Status.EffectID)EditorGUILayout.EnumPopup ("Triggered status", currentEffect_.triggeredStatus);
 		EditorGUILayout.EndHorizontal ();
 
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Power");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentEffect_.effectPower);
-		EditorGUILayout.EndHorizontal ();
-
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Trigger chance");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentEffect_.triggerChance);
-		EditorGUILayout.EndHorizontal ();
+		EditorHelper.Draw ("Power", currentEffect_.power);
+		EditorHelper.Draw ("Trigger chance", currentEffect_.triggerChance);
 
 
 		EditorGUILayout.EndVertical ();

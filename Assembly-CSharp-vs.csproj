@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C1DBE80D-B0E3-ECE2-782F-78F98CA2FF3D}</ProjectGuid>
+	<ProjectGuid>{94C708C1-5F9E-2648-E605-8D49286552FD}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -116,6 +116,7 @@
      <Compile Include="Assets\Scripts\GameData\Effects.cs" />
      <Compile Include="Assets\Scripts\GameData\Enemies.cs" />
      <Compile Include="Assets\Scripts\GameData\EnemyEntry.cs" />
+     <Compile Include="Assets\Scripts\GameData\EnemyTableEntry.cs" />
      <Compile Include="Assets\Scripts\GameData\EnemyTables.cs" />
      <Compile Include="Assets\Scripts\GameData\HeroEntry.cs" />
      <Compile Include="Assets\Scripts\GameData\Heroes.cs" />
@@ -204,6 +205,7 @@
      <None Include="Assets\Scripts\DOTween\DOTween46.xml" />
      <None Include="Assets\Resources\GameData\towers.json.txt" />
      <None Include="Assets\Resources\GameData\heroes.json.txt" />
+     <None Include="Assets\Resources\GameData\spell_mods.json.txt" />
      <None Include="Assets\Scripts\Json\readme.txt" />
      <None Include="Assets\Scripts\DOTween\readme.txt" />
      <None Include="Assets\Resources\GameData\spells.json.txt" />
@@ -212,16 +214,16 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="DOTween">
- <HintPath>C:/Users/imyourm8/Documents/LootQuest/Assets/Scripts/DOTween/DOTween.dll</HintPath>
+ <HintPath>F:/System Folder/Users/Администратор/Documents/rpg/Assets/Scripts/DOTween/DOTween.dll</HintPath>
  </Reference>
  <Reference Include="DOTween43">
- <HintPath>C:/Users/imyourm8/Documents/LootQuest/Assets/Scripts/DOTween/DOTween43.dll</HintPath>
+ <HintPath>F:/System Folder/Users/Администратор/Documents/rpg/Assets/Scripts/DOTween/DOTween43.dll</HintPath>
  </Reference>
  <Reference Include="DOTween46">
- <HintPath>C:/Users/imyourm8/Documents/LootQuest/Assets/Scripts/DOTween/DOTween46.dll</HintPath>
+ <HintPath>F:/System Folder/Users/Администратор/Documents/rpg/Assets/Scripts/DOTween/DOTween46.dll</HintPath>
  </Reference>
  <Reference Include="DOTween50">
- <HintPath>C:/Users/imyourm8/Documents/LootQuest/Assets/Scripts/DOTween/DOTween50.dll</HintPath>
+ <HintPath>F:/System Folder/Users/Администратор/Documents/rpg/Assets/Scripts/DOTween/DOTween50.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iossupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

@@ -25,6 +25,8 @@ public class ConfigurationEditor : EditorWindow
 	{
 		tabs_ = new List<IEditorTab> ();
 
+		EditorHelper.Init ();
+
 		PopulateTabs ();
 
 		tabsTitles_ = new string[tabs_.Count];
@@ -36,9 +38,10 @@ public class ConfigurationEditor : EditorWindow
 	}
 
 	void PopulateTabs()
-	{
+	{ 
 		tabs_.Add (new HeroEditor ());
 		tabs_.Add (new MobEditor ());
+		tabs_.Add (new EnemyTable ());
 		tabs_.Add (new ItemEditor());
 		tabs_.Add (new LootTables());
 		tabs_.Add (new TowerSettings());
@@ -49,7 +52,8 @@ public class ConfigurationEditor : EditorWindow
     {
 		tabIndex_ = GUILayout.Toolbar (tabIndex_, tabsTitles_);
 
-		if (tabIndex_ < tabs_.Count) {
+		if (tabIndex_ < tabs_.Count) 
+		{
 			var selectedTab = tabs_ [tabIndex_];
 			selectedTab.OnGUI ();
 		}

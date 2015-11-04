@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,11 +14,26 @@ public class ModifierTab
 	private List<ModifierEntry> mods_;
 	private ModifierEntry currentMod_;
 	private Vector2 scrollPosition_ = Vector2.zero;
+	private int newEffect_;
 
 	public ModifierTab()
 	{
 		LootQuest.GameData.Modifiers.Instance.Load ();
 		mods_ = LootQuest.GameData.Modifiers.Instance.Data;
+	}
+
+	public void RefreshEffectList()
+	{
+		SpellTab.Instance().RefreshEffectList ();
+		int count = mods_.Count;
+		for (int i = 0; i < count; ++i)
+		{
+			var mod = mods_[i];
+			if (!SpellTab.Instance().EffectsHash.Contains(mod.spellEffect))
+			{
+				mod.spellEffect = "";
+			}
+		}
 	}
 
 	public void GUI()
@@ -28,6 +45,11 @@ public class ModifierTab
 		if (GUILayout.Button ("Save")) 
 		{
 			LootQuest.GameData.Modifiers.Instance.Save();
+		}
+
+		if (GUILayout.Button ("Check effects")) 
+		{
+			RefreshEffectList();
 		}
 
 		if (GUILayout.Button ("Add Mod")) 
@@ -100,23 +122,26 @@ public class ModifierTab
 		currentMod_.view = (GameObject)EditorGUILayout.ObjectField (currentMod_.view, typeof(GameObject));
 		EditorGUILayout.EndHorizontal ();
 
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Duration");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentMod_.duration);
-		EditorGUILayout.EndHorizontal ();
+		EditorHelper.Draw ("Duration", currentMod_.duration);
+		EditorHelper.Draw ("Add Duration", currentMod_.addDuration);
 
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Power");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentMod_.power);
-		EditorGUILayout.EndHorizontal ();
+		EditorHelper.Draw ("Power", currentMod_.power);
+		EditorHelper.Draw ("Add Power", currentMod_.addPower);
 
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Projectile Count");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentMod_.projectileCount);
-		EditorGUILayout.EndHorizontal ();
+		EditorHelper.Draw ("Chance", currentMod_.chance);
+		EditorHelper.Draw ("Add Chance", currentMod_.addChance);
+
+		EditorHelper.Draw ("Projectiles Count", currentMod_.projectileCount);
+		EditorHelper.Draw ("Add Projectiles Count", currentMod_.addProjectileCount);
+
+		EditorHelper.Draw ("Projectile scale", currentMod_.projectileScale);
+		EditorHelper.Draw ("Add Projectile scale", currentMod_.addProjectileScale);
+
+		EditorHelper.Draw ("Effective Range", currentMod_.range);
+		EditorHelper.Draw ("Add Effective Range", currentMod_.addRange);
+
+		EditorHelper.Draw ("Max Stacks", currentMod_.maxStacks);
+		EditorHelper.Draw ("Add Max Stacks", currentMod_.addMaxStacks);
 
 		EditorGUILayout.BeginHorizontal ();
 		EditorGUILayout.LabelField ("Projectile prefab");
@@ -125,21 +150,10 @@ public class ModifierTab
 		EditorGUILayout.EndHorizontal ();
 
 		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Projectile scale");
+		EditorGUILayout.LabelField ("Spell Effect");
 		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentMod_.projectileScale);
-		EditorGUILayout.EndHorizontal ();
-
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Max stacks");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentMod_.maxStacks);
-		EditorGUILayout.EndHorizontal ();
-
-		EditorGUILayout.BeginHorizontal ();
-		EditorGUILayout.LabelField ("Range");
-		EditorGUILayout.Separator ();
-		EditorHelper.DrawRange (currentMod_.range);
+		newEffect_ = EditorGUILayout.Popup (newEffect_, SpellTab.Instance().EffectsNames);
+		currentMod_.spellEffect = SpellTab.Instance().EffectsNames [newEffect_];
 		EditorGUILayout.EndHorizontal ();
 
 		EditorGUILayout.EndVertical ();

@@ -23,12 +23,13 @@ namespace LootQuest.GameData
 				foreach(var effect in obj.list)
 				{ 
 					var model = new SpellEffectEntry();
-					RangeUtils.FromJson(model.effectPower, effect["power"]);
+					RangeUtils.FromJson(model.power, effect["power"]);
 					RangeUtils.FromJson(model.triggerChance, effect["chance"]);
-					model.handler = (LootQuest.Game.Spells.SpellEffects.SpellEffectID)effect["id"].i;
+					model.handler = (LootQuest.Game.Spells.SpellEffects.SpellEffectID)effect["handler"].i;
 					model.level = (int)effect["level"].i;
 					model.titleID = effect["title"].str;
 					model.triggeredStatus = (LootQuest.Game.Status.EffectID)effect["triggered_status"].i;
+					model.id = effect["id"].str;
 
 					Data.Add(model);
 				}
@@ -44,12 +45,13 @@ namespace LootQuest.GameData
 			{
 				JSONObject effectData = new JSONObject ();
 
-				effectData.AddField("id", (int)effect.handler);
+				effectData.AddField("id", effect.id);
 				effectData.AddField("level", effect.level);
 				effectData.AddField("title", effect.titleID);
+				effectData.AddField("handler", (int)effect.handler);
 				effectData.AddField("triggered_status", (int)effect.triggeredStatus);
 				effectData.AddField("chance", RangeUtils.ToJson(effect.triggerChance));
-				effectData.AddField("power", RangeUtils.ToJson(effect.effectPower));
+				effectData.AddField("power", RangeUtils.ToJson(effect.power));
 
 				obj.Add(effectData);
 			}

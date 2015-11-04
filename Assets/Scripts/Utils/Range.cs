@@ -11,6 +11,12 @@ namespace LootQuest.Utils
 
 		}
 
+		public Range<T> Copy()
+		{
+			var r = new Range<T> (min_, max_);
+			return r;
+		}
+
 		public Range(T min, T max)
 		{
 			min_ = min;
@@ -39,6 +45,20 @@ namespace LootQuest.Utils
 		}
 		
 		public static JSONObject ToJson(Range<float> range)
+		{
+			JSONObject obj = new JSONObject ();
+			obj.AddField("min", range.Min);
+			obj.AddField("max", range.Max);
+			return obj;
+		}
+
+		public static void FromJson(Range<int> range, JSONObject obj)
+		{
+			range.Min = (int)obj ["min"].i;
+			range.Max = (int)obj ["max"].i;
+		}
+		
+		public static JSONObject ToJson(Range<int> range)
 		{
 			JSONObject obj = new JSONObject ();
 			obj.AddField("min", range.Min);

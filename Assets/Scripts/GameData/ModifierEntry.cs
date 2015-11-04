@@ -17,17 +17,26 @@ namespace LootQuest.GameData
 
 		public Range<float> addRange = new Range<float>();
 		public Range<float> range = new Range<float> ();
+
 		public Range<float> addPower = new Range<float>();
 		public Range<float> power = new Range<float> ();
+
 		public Range<float> addChance = new Range<float>();
 		public Range<float> chance = new Range<float>();
+
 		public Range<int> addDuration = new Range<int>();
 		public Range<int> duration = new Range<int>();
+
 		public Range<float> addProjectileCount = new Range<float> ();
 		public Range<int> projectileCount = new Range<int> ();
+
+		public Range<float> addProjectileScale = new Range<float> ();
 		public Range<float> projectileScale = new Range<float> ();
+
 		public Range<int> addMaxStacks = new Range<int>();
 		public Range<int> maxStacks = new Range<int>();
+
+		public string spellEffect = "";
 
 		public ModifierEntry()
 		{}

@@ -51,6 +51,25 @@ namespace LootQuest.GameData
 						template.maxValue = statData[statStr+"_max"].f;
 					}
 
+					if (enemy.HasField("spells"))
+					{
+						var spellEntries = enemy["spells"].list;
+						foreach(var entry in spellEntries)
+						{
+							var spellsEntry = new LootQuest.GameData.EnemySpellsEntry();
+							spellsEntry.maxEnemyLevel = (int)entry["level"].i;
+
+							foreach(var sp in entry["spells"].list)
+							{
+								var spell = new LootQuest.GameData.EnemySpell();
+								spell.spellID = sp["id"].str;
+								spell.weight = sp["w"].f;
+								spellsEntry.spells.Add(spell);
+							}
+
+							model.spells.Add(spellsEntry);
+						}
+					}
 					Data.Add(model);
 				}
 			}
@@ -83,6 +102,29 @@ namespace LootQuest.GameData
 					range.AddField(statID+"_min", stat.minValue);
 					range.AddField(statID+"_max", stat.maxValue);
 					stats.AddField(statID, range);
+				}
+
+				JSONObject spellsObj = new JSONObject(JSONObject.Type.ARRAY);
+				enemyObj.AddField("spells", enemyObj);
+
+				foreach(var spells in enemy.spells)
+				{
+					JSONObject spellObj = new JSONObject();
+					spellObj.AddField("level", spells.maxEnemyLevel);
+
+					JSONObject spellList = new JSONObject(JSONObject.Type.ARRAY);
+					spellObj.AddField("spells", spellList);
+
+					foreach(var spell in spells.spells)
+					{
+						JSONObject sp = new JSONObject();
+						spellObj.Add(sp);
+
+						sp.AddField("id", spell.spellID);
+						sp.AddField("w", spell.weight);
+					}
+
+					spellsObj.Add(spellObj);
 				}
 			}
 

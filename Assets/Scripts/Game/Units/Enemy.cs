@@ -3,6 +3,14 @@ using System.Collections;
 
 namespace LootQuest.Game.Units 
 {
+	public enum EnemyType
+	{
+		Normal,
+		Rare,
+		Unique,
+		Boss
+	}
+
 	public class Enemy : Unit 
 	{
 		public Enemy()

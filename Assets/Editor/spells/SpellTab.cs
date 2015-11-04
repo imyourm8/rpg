@@ -14,11 +14,14 @@ public class SpellTab
 	private SpellEntry currentSpell_;
 	private Vector2 scrollPosition_ = Vector2.zero;
 	private Vector2 effectsScrollPosition_ = Vector2.zero;
-	private LootQuest.Game.Spells.SpellEffects.SpellEffectID newEffect_;
+	private int newEffect_ = 0;
+	private string selectedEffect_;
 
 	private HashSet<string> spellHash_;
+
+	public HashSet<string> SpellHash;
+	public HashSet<string> EffectsHash;
 	public string[] SpellNames = new string[]{};
-	public int[] Effects = new int[]{};
 	public string[] EffectsNames = new string[]{};
 
 	private static SpellTab instance_;
@@ -31,6 +34,8 @@ public class SpellTab
 	{
 		instance_ = this;
 		spellHash_ = new HashSet<string> ();
+		SpellHash = spellHash_;
+		EffectsHash = new HashSet<string> ();
 		LootQuest.GameData.Spells.Instance.Load ();
 		spells_ = LootQuest.GameData.Spells.Instance.Data;
 		RefreshSpellNames ();
@@ -52,28 +57,20 @@ public class SpellTab
 
 	public void RefreshEffectList()
 	{
-		Effects = new int[LootQuest.GameData.Effects.Instance.Data.Count];
 		EffectsNames = new string[LootQuest.GameData.Effects.Instance.Data.Count];
-
-		int i = 0; 
-		foreach(var eff in LootQuest.GameData.Effects.Instance.Data)
+		EffectsHash.Clear ();
+		int i = 0;
+		foreach (var eff in LootQuest.GameData.Effects.Instance.Data) 
 		{
-			Effects[i++] = (int)eff.handler;
-		}
-
-		Array.Sort (Effects);
-
-		i = 0;
-		foreach (var eff in Effects) 
-		{
-			EffectsNames [i++] = ((LootQuest.Game.Spells.SpellEffects.SpellEffectID)eff).ToString();
-		}
+			EffectsNames [i++] = eff.id;
+			EffectsHash.Add(eff.id);
+		} 
 
 		int count = spells_.Count;
 		for (i = 0; i < count; ++i)
 		{
 			var spell = spells_[i];
-			spell.effects.RemoveAll(x=>Array.BinarySearch(Effects, (int)x)<0);
+			spell.effects.RemoveAll(x=>!EffectsHash.Contains(x));
 		}
 	}
 
@@ -213,35 +210,43 @@ public class SpellTab
 
 		#region Effects
 		EditorGUILayout.BeginHorizontal ();
-		if (GUILayout.Button ("Add")) 
+
+		if (newEffect_ < EffectsNames.Length)
 		{
-			currentSpell_.effects.Add(newEffect_);
+
+			if (GUILayout.Button ("Add")) 
+			{
+				currentSpell_.effects.Add(EffectsNames[newEffect_]);
+			}
 		}
-		
-		if (GUILayout.Button ("Remove")) 
+
+		if (selectedEffect_ != null && GUILayout.Button ("Remove")) 
 		{
-			currentSpell_.effects.Remove(newEffect_);
+			currentSpell_.effects.Remove(selectedEffect_);
+			selectedEffect_ = null;
 		}
-		
-		newEffect_ = 
-			(LootQuest.Game.Spells.SpellEffects.SpellEffectID)
-				EditorGUILayout.IntPopup ((int)newEffect_, EffectsNames, Effects);
+
+		newEffect_ = EditorGUILayout.Popup (newEffect_, EffectsNames);
 		
 		EditorGUILayout.EndHorizontal ();
 
-		effectsScrollPosition_ = EditorGUILayout.BeginScrollView (effectsScrollPosition_);
-		
-		int count = currentSpell_.effects.Count;
-		for (int i = 0; i < count; ++i) 
+		if (newEffect_ < EffectsNames.Length)
 		{
-			var eff = currentSpell_.effects[i];
-			if (GUILayout.Button(eff.ToString(), EditorHelper.ListSkin(newEffect_==eff)))
+			effectsScrollPosition_ = EditorGUILayout.BeginScrollView (effectsScrollPosition_);
+			
+			int count = currentSpell_.effects.Count;
+			string selectedEffect = EffectsNames[newEffect_];
+			for (int i = 0; i < count; ++i) 
 			{
-				newEffect_ = eff;
+				var eff = currentSpell_.effects[i];
+				if (GUILayout.Button(eff, EditorHelper.ListSkin(selectedEffect==eff)))
+				{
+					selectedEffect_ = eff;
+				}
 			}
+			EditorGUILayout.EndScrollView ();
 		}
-		
-		EditorGUILayout.EndScrollView ();
+
 		#endregion
 		EditorGUILayout.EndVertical ();
 	}

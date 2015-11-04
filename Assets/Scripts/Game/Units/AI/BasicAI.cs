@@ -35,8 +35,7 @@ namespace LootQuest.Game.Units.AI
 		protected void FindTarget()
 		{
 			var game = owner_.Game;
-			var targets = game.GetUnitsInRadius 
-				(99999.0f, owner_);
+			var targets = game.GetUnitsInRadius(99999.0f, owner_);
 			//find nearest target on arena
 			if (targets.Count > 0) 
 			{

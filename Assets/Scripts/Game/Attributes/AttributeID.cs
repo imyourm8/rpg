@@ -16,6 +16,8 @@ namespace LootQuest.Game.Attributes
 		CritChance,
 		SpellDamage,
 		MovementSpeed,
-		AttackRange
+		AttackRange,
+		Defense,
+		Damage
 	}
 }

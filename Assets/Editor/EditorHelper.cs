@@ -10,65 +10,62 @@ public class EditorHelper
 {
 	static public Color tintColor = new Color(0.6f, 0.6f, 1.0f);
 
-	static public Texture2D tableBGTexture;
-	static public Texture2D tableHeaderBGTexture;
-	static public Texture2D tintTex;
-	static public Texture2D blackTex;
-	
-	static public GUIStyle tableStyle;
-	static public GUIStyle tableHeaderStyle;
-	static public GUIStyle tableFieldStyle;
-	static public GUIStyle previewBackground;
-	static public GUIStyle listStyle;
-	static public GUIStyle listSelStyle;
+	public static Texture TrashCanIcon;
+	public static Texture PlusIcon;
+	public static GUIContent FoldoutContent = new GUIContent ();
 
-	public void Init()
+	public static GUILayoutOption[] PlusButton;
+	public static GUILayoutOption[] TrashCanButton;
+	public static GUILayoutOption[] Line = new GUILayoutOption[]{GUILayout.ExpandWidth (true), GUILayout.Height (1)};
+
+	public static void Init()
 	{
-		if (listStyle == null) {
-			listStyle = new GUIStyle (GUI.skin.button);
-			
-			listStyle.alignment = TextAnchor.MiddleLeft;
-			listStyle.normal.background = null;
-			listStyle.active.background = null;
-			listStyle.hover.background = null;
-		}
-		
-		if (listSelStyle == null || tintTex == null) {
-			tintTex = new Texture2D(1, 1);
-			tintTex.SetPixel(0,0, tintColor);
-			tintTex.Apply();
-			
-			listSelStyle = new GUIStyle (GUI.skin.button);
-			listSelStyle.alignment = TextAnchor.MiddleLeft;
-		}
-		
-		listSelStyle.normal.background = tintTex;
-		listSelStyle.active.background = tintTex;
-		listSelStyle.hover.background = tintTex;
+		TrashCanIcon = Resources.Load<Texture> ("Editor/trash-can");
+		TrashCanButton = new GUILayoutOption[]{GUILayout.Width((float)TrashCanIcon.width), GUILayout.Height((float)TrashCanIcon.height)};
+
+		PlusIcon = Resources.Load<Texture> ("Editor/plus");
+		PlusButton = new GUILayoutOption[]{GUILayout.Width((float)PlusIcon.width), GUILayout.Height((float)PlusIcon.height)};
 	}
 
 	public static void DrawTextfieldValue(LootQuest.Game.Attributes.Attribute att)
 	{
-		float value = 0.0f;
-		try {
-		value = float.Parse(EditorGUILayout.TextField (att.Value.ToString ()));
-		} catch(FormatException e){}
-
-		att.SetValue(value);
+		att.SetValue(EditorGUILayout.FloatField (att.Value));
 	}
 
 	public static void DrawRange(LootQuest.GameData.AttributeTemplate att)
 	{
-		try {
-			att.minValue = float.Parse(EditorGUILayout.TextField (att.minValue.ToString ()));
-			att.maxValue = float.Parse(EditorGUILayout.TextField (att.maxValue.ToString ()));
-		} catch(FormatException e){}
+		att.minValue = EditorGUILayout.FloatField (att.minValue);
+		att.maxValue = EditorGUILayout.FloatField (att.maxValue);
 	}
 
 	public static void DrawRange(Range<float> range)
 	{
 		range.Min = EditorGUILayout.FloatField (range.Min);
 		range.Max = EditorGUILayout.FloatField (range.Max);
+	}
+
+	public static void DrawRange(Range<int> range)
+	{
+		range.Min = EditorGUILayout.IntField (range.Min);
+		range.Max = EditorGUILayout.IntField (range.Max);
+	}
+
+	public static void Draw(string label, Range<float> range)
+	{
+		EditorGUILayout.BeginHorizontal ();
+		EditorGUILayout.LabelField (label);
+		EditorGUILayout.Separator ();
+		EditorHelper.DrawRange (range);
+		EditorGUILayout.EndHorizontal ();
+	}
+
+	public static void Draw(string label, Range<int> range)
+	{
+		EditorGUILayout.BeginHorizontal ();
+		EditorGUILayout.LabelField (label);
+		EditorGUILayout.Separator ();
+		EditorHelper.DrawRange (range);
+		EditorGUILayout.EndHorizontal ();
 	}
 
 	public static float DrawTextfieldValue(float value)

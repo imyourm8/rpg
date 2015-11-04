@@ -48,10 +48,21 @@ namespace LootQuest.Game.Units
 			var spell = new Spells.Spell ();
 			spell.InitFromEntry (id, 1, this);
 			spells_.Add (spell);
+			PutSpellInSlot (spell.Entry.slot, spell);
 		}
 
-		public bool PutSpellInSlot()
+		public Spell GetSpell(SlotStype slot)
 		{
+			Spell spell;
+			spellSlots_.TryGetValue (slot, out spell);
+			return spell;
+		}
+
+		public bool PutSpellInSlot(SlotStype slot, Spell spell)
+		{
+			if (spell.Entry.slot != slot)
+				return false;
+			spellSlots_ [slot] = spell;
 			return true;
 		}
 

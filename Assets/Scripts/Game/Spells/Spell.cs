@@ -25,6 +25,7 @@ namespace LootQuest.Game.Spells
         private float castPosition_ = 0;
 		private List<Game.Units.Entity> targets_;
         private int level_;
+		private Dictionary<SpellEffectID, Action<SpellEffectData>> spellEffects_;
 
         private static Dictionary<SpellTargetStrategy, ITargetStrategy> strategies_
             = new Dictionary<SpellTargetStrategy, ITargetStrategy>();
@@ -37,7 +38,14 @@ namespace LootQuest.Game.Spells
             //Add target strats
             strategies_.Add(SpellTargetStrategy.NEAREST, new ChooseFirstN(new ByDistance(new TargetStrategy())));
             strategies_.Add(SpellTargetStrategy.IN_RADIUS, new TargetStrategy());
+			strategies_.Add(SpellTargetStrategy.RANDOM, new TargetStrategy());
         }
+
+		public Spell()
+		{
+			spellEffects_ = new Dictionary<SpellEffectID, Action<SpellEffectData>> ();
+
+		}
 
         public void Dispose()
         {
