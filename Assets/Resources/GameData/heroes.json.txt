@@ -1,0 +1,1 @@
+{"view":"Assets/Resources/Prefabs/Hero.prefab","stats":{"AttackSpeed":0,"CritChance":5,"CritDamage":50,"DamageMax":0,"DamageMin":0,"Dexterity":5,"Health":100,"HealthRegeneration":0,"MovementSpeed":50,"Strength":5}}

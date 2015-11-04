@@ -1,0 +1,1 @@
+[{"enemy_dmg_mult":0,"enemy_hp_mult":0,"lvl_min":1,"lvl_max":1},{"enemy_dmg_mult":0,"enemy_hp_mult":0,"lvl_min":2,"lvl_max":2},{"enemy_dmg_mult":0.4,"enemy_hp_mult":0.3,"lvl_min":3,"lvl_max":3},{"enemy_dmg_mult":0,"enemy_hp_mult":0,"lvl_min":4,"lvl_max":4},{"enemy_dmg_mult":0,"enemy_hp_mult":0,"lvl_min":5,"lvl_max":5}]
