@@ -22,5 +22,7 @@ namespace LootQuest.GameData
 
 		public List<EnemyTableEntry> EnemyTables = new List<EnemyTableEntry>();
 		public Utils.Range<int> groupCount = new LootQuest.Utils.Range<int>();
+
+		public int selectedEnemyTable = 0;
 	}
 }

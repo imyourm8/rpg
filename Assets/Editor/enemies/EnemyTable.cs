@@ -12,6 +12,8 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 		get {return "Enemy tables";} 
 	}
 
+	private static EnemyTable instance_;
+
 	private List<EnemyTableEntry> tables_;
 	private Vector2 tablesScrollPos_ = Vector2.zero;
 	private EnemyTableEntry currentTable_;
@@ -19,9 +21,17 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 	public string[] TableNames = new string[]{};
 	public Dictionary<string, EnemyTableEntry> TableHash = new Dictionary<string, EnemyTableEntry>();
 
+	public static EnemyTable Instance() 
+	{
+		return instance_;
+	}
+
 	public EnemyTable()
 	{
+		LootQuest.GameData.EnemyTables.Instance.Load ();
 		tables_ = LootQuest.GameData.EnemyTables.Instance.Data;
+		instance_ = this;
+		RefreshTables ();
 	}
 
 	private void RefreshTables()
@@ -57,11 +67,13 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 		{
 			currentTable_ = new EnemyTableEntry();
 			tables_.Add(currentTable_);
+			RefreshTables();
 		}
 		if (currentTable_ != null && GUILayout.Button ("Remove table")) 
 		{
 			tables_.Remove(currentTable_);
 			currentTable_ = null;
+			RefreshTables();
 		}
 		EditorGUILayout.EndHorizontal ();
 
@@ -84,7 +96,7 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 		EnemyTableEntry nextTable = null;
 		foreach (var table in tables_) 
 		{
-			string id = "Table: "+table.maxTowerLevel.ToString();
+			string id = table.id+" Lv: "+table.maxTowerLevel.ToString();
 			if (GUILayout.Button(id, EditorHelper.ListSkin(table==currentTable_)))
 			{
 				nextTable = table;
@@ -116,6 +128,7 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 		EditorGUILayout.EndHorizontal ();
 
 		EditorHelper.Draw ("Group Size", currentTable_.groupSize);
+		EditorHelper.Draw ("Group Count", currentTable_.groupCount);
 
 		GUILayout.Box("", EditorHelper.Line);
 

@@ -32,6 +32,7 @@ namespace LootQuest.GameData
 		public int maxTowerLevel;
 		public List<EnemyTableSpawnChanceEntry> spawnChances = new List<EnemyTableSpawnChanceEntry> ();
 		public Utils.Range<int> groupSize = new LootQuest.Utils.Range<int> ();
+		public Utils.Range<int> groupCount = new LootQuest.Utils.Range<int> ();
 		public Dictionary<LootQuest.Game.Units.EnemyType, List<EnemyTableSpawnEntry>> enemies = new Dictionary<LootQuest.Game.Units.EnemyType, List<EnemyTableSpawnEntry>>();
 
 		public EnemyTableEntry()

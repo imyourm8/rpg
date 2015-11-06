@@ -39,17 +39,23 @@ public class ConfigurationEditor : EditorWindow
 
 	void PopulateTabs()
 	{ 
+		tabs_.Clear ();
 		tabs_.Add (new HeroEditor ());
 		tabs_.Add (new MobEditor ());
 		tabs_.Add (new EnemyTable ());
+		tabs_.Add (new TowerSettings());
 		tabs_.Add (new ItemEditor());
 		tabs_.Add (new LootTables());
-		tabs_.Add (new TowerSettings());
 		tabs_.Add (new SpellEditor ());
 	}
 
     void OnGUI()
     {
+		if (GUILayout.Button ("Reload All")) 
+		{
+			PopulateTabs();
+		}
+
 		tabIndex_ = GUILayout.Toolbar (tabIndex_, tabsTitles_);
 
 		if (tabIndex_ < tabs_.Count) 

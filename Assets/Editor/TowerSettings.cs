@@ -11,6 +11,7 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 	private List<TowerEntry> towers_;
 	private TowerEntry currentModel_;
 	private StringBuilder strBuild_ = new StringBuilder();
+	private Vector2 scrollPos_ = Vector2.zero;
 
 	public TowerSettings()
 	{
@@ -38,6 +39,12 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 			currentModel_ = new TowerEntry();
 			towers_.Add(currentModel_);
 		}
+
+		if (currentModel_ != null && GUILayout.Button ("Remove tower")) 
+		{
+			towers_.Remove(currentModel_);
+			currentModel_ = null;
+		}
 		EditorGUILayout.EndHorizontal ();
 		EditorGUILayout.Separator ();
 
@@ -56,7 +63,7 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 
 	void DrawTowerList ()
 	{
-		EditorGUILayout.BeginVertical ();
+		EditorGUILayout.BeginVertical (GUILayout.MaxWidth (100));
 
 		TowerEntry nextModel = null;
 		int count = towers_.Count;
@@ -67,7 +74,7 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 			strBuild_.Remove(0, strBuild_.Length);
 			string label = strBuild_.Append("Level ").Append(model.LevelRange.Min).Append(" - ").Append(model.LevelRange.Max).ToString();
 
-			if (GUILayout.Button(label,EditorHelper.ListSkin(model==currentModel_)))
+			if (GUILayout.Button(label, EditorHelper.ListSkin(model==currentModel_)))
 			{
 				nextModel = model;
 			}
@@ -76,6 +83,7 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 		if (nextModel != null) 
 		{
 			currentModel_ = nextModel;
+			scrollPos_ = Vector2.zero;
 		}
 
 		EditorGUILayout.EndVertical ();
@@ -83,15 +91,17 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 
 	void DrawTower (TowerEntry tower_)
 	{
-		EditorGUILayout.BeginVertical ();
+		EditorGUILayout.BeginVertical (GUILayout.MaxWidth (500));
 
 		var lvlRange = tower_.LevelRange;
 		EditorGUILayout.BeginHorizontal ();
 		GUILayout.Label ("Level ", EditorStyles.label);
 		EditorGUILayout.Separator ();
 		lvlRange.Min = EditorGUILayout.IntField(tower_.LevelRange.Min);
+		lvlRange.Min = Math.Max (1, lvlRange.Min);
 		GUILayout.Label ("-", EditorStyles.label);
 		lvlRange.Max = EditorGUILayout.IntField(tower_.LevelRange.Max);
+		lvlRange.Max = Math.Max (lvlRange.Min, lvlRange.Max);
 		EditorGUILayout.EndHorizontal ();
 		tower_.LevelRange = lvlRange;
 
@@ -109,14 +119,39 @@ public class TowerSettings : ConfigurationEditor.IEditorTab
 		
 		EditorGUILayout.LabelField("Enemy tables");
 		EditorGUILayout.BeginHorizontal ();
-
+		var tableNames = EnemyTable.Instance ().TableNames;
+		if (tableNames.Length > tower_.selectedEnemyTable)
+		{
+			tower_.selectedEnemyTable = EditorGUILayout.Popup(tower_.selectedEnemyTable, tableNames);
+			if (GUILayout.Button(EditorHelper.PlusIcon, EditorHelper.PlusButton))
+			{
+				var name = tableNames[tower_.selectedEnemyTable];
+				tower_.EnemyTables.Add(EnemyTable.Instance ().TableHash[name]);
+			}
+		}
 		EditorGUILayout.EndHorizontal ();
+
+		scrollPos_ = EditorGUILayout.BeginScrollView (scrollPos_, GUILayout.MaxHeight (600));
 		EditorGUI.indentLevel++;
+		EnemyTableEntry tableToDelete = null;
 		foreach (var table in tower_.EnemyTables) 
 		{
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.LabelField(table.id);
+			EditorGUILayout.Separator();
+			if (GUILayout.Button(EditorHelper.TrashCanIcon, EditorHelper.TrashCanButton))
+			{
+				tableToDelete = table;
+			}
+			EditorGUILayout.EndHorizontal ();
+		}
 
+		if (tableToDelete != null)
+		{
+			tower_.EnemyTables.Remove(tableToDelete);
 		}
 		EditorGUI.indentLevel--;
+		EditorGUILayout.EndScrollView ();
 
 		EditorGUILayout.EndVertical ();
 	}

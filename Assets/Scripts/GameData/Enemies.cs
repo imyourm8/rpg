@@ -11,10 +11,19 @@ namespace LootQuest.GameData
 	public class Enemies : Utils.Singleton<Enemies>
 	{
 		public List<GameData.EnemyEntry> Data = new List<GameData.EnemyEntry>();
+		private Dictionary<string, GameData.EnemyEntry> hash_ = new Dictionary<string, EnemyEntry> ();
+
+		public GameData.EnemyEntry GetEnemy(string id)
+		{
+			GameData.EnemyEntry entry;
+			hash_.TryGetValue (id, out entry);
+			return entry;
+		}
 
 		public void Load()
 		{
 			Data.Clear ();
+			hash_.Clear ();
 			TextAsset asset = Resources.Load("GameData/enemies.json") as TextAsset;
 
 			if (asset != null) 
@@ -70,7 +79,8 @@ namespace LootQuest.GameData
 							model.spells.Add(spellsEntry);
 						}
 					}
-					Data.Add(model);
+					Data.Add(model);  
+					hash_.Add(model.ID, model); 
 				}
 			}
 		}
