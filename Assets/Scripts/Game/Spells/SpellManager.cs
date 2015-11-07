@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +18,7 @@ namespace LootQuest.Game.Spells
 
 		public void Add(Spell spell)
 		{
-			spells_.Add (spell.Entry.slot, spell);
+			spells_.Add (spell.Data.entry.slot, spell);
 		}
 
 		public Spell GetSpellInSlot(SlotStype slot)
@@ -26,6 +26,11 @@ namespace LootQuest.Game.Spells
 			Spell spell = null;
 			spells_.TryGetValue(slot, out spell);
 			return spell;
+		}
+
+		public void Clear()
+		{
+			spells_.Clear ();
 		}
     }
 }

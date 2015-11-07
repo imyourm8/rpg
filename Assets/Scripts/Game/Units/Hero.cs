@@ -18,6 +18,12 @@ namespace LootQuest.Game.Units
 			stats_.Get (LootQuest.Game.Attributes.AttributeID.AttackRange).SetValue (39.0f);
 
 			AI = Factory.AIFactory.Instance.Create (LootQuest.Game.Units.AI.Type.Basic);
+
+			if (entry.autoAttackAbility.Length > 0) 
+			{
+				autoAttackAbility_ = entry.autoAttackAbility;
+				LoadSpell(entry.autoAttackAbility);
+			}
 		}
 	}
 }

@@ -10,10 +10,20 @@ namespace LootQuest.GameData
 	public class Effects : Utils.Singleton<Effects> 
 	{
 		public List<SpellEffectEntry> Data = new List<SpellEffectEntry>();
+		private Dictionary<string, SpellEffectEntry> hash_ = new Dictionary<string, SpellEffectEntry>();
+
+		public SpellEffectEntry GetEntry(string id)
+		{
+			SpellEffectEntry entry;
+			hash_.TryGetValue (id, out entry);
+			return entry;
+		}
 
 		public void Load()
 		{
 			Data.Clear ();
+			hash_.Clear ();
+
 			TextAsset asset = Resources.Load("GameData/spell_effects.json") as TextAsset;
 			
 			if (asset != null) 
@@ -32,6 +42,7 @@ namespace LootQuest.GameData
 					model.id = effect["id"].str;
 
 					Data.Add(model);
+					hash_.Add(model.id, model);
 				}
 			}
 		}

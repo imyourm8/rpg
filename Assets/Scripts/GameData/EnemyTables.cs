@@ -49,7 +49,7 @@ namespace LootQuest.GameData {
 							var enemyEntry = Enemies.Instance.GetEnemy(enemyData["id"].str);
 							if (enemyEntry == null) continue;
 							var enemy = new EnemyTableSpawnEntry();
-							enemies.Add(enemy);
+							enemies.enemies.Add(enemy);
 
 							enemy.weight = (int)enemyData["weight"].i;
 							enemy.enemy = enemyEntry;
@@ -58,6 +58,9 @@ namespace LootQuest.GameData {
 
 					Data.Add(table);
 					hash_.Add(table.id, table);
+
+					table.OrderEnemiesByWeight();
+					table.OrderSpawnChancesByWeight();
 				}
 			}
 		}
@@ -89,7 +92,8 @@ namespace LootQuest.GameData {
 
 					JSONObject enemiesData = new JSONObject(JSONObject.Type.ARRAY);
 					spawnChanceData.AddField("enemies", enemiesData);
-					foreach(var enemy in table.enemies[spawnChance.enemyType])
+
+					foreach(var enemy in table.enemies[spawnChance.enemyType].enemies)
 					{
 						JSONObject enemyData = new JSONObject();
 						enemiesData.Add(enemyData);

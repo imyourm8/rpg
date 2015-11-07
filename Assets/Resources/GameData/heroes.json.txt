@@ -1,1 +1,1 @@
-{"view":"Assets/Resources/Prefabs/Hero.prefab","stats":{"AttackSpeed":0,"CritChance":5,"CritDamage":50,"DamageMax":0,"DamageMin":0,"Dexterity":5,"Health":100,"HealthRegeneration":0,"MovementSpeed":50,"Strength":5}}
+{"view":"Assets/Resources/Prefabs/Hero.prefab","stats":{"AttackSpeed":3,"CritChance":5,"CritDamage":50,"DamageMin":2,"DamageMax":4,"Dexterity":5,"Health":9999,"HealthRegeneration":0,"MovementSpeed":150,"Strength":5},"auto_attack":"melee_auto_attack"}

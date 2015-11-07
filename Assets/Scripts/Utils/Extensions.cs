@@ -7,6 +7,16 @@ using System.Collections.Generic;
 
 public static class Extensions
 {
+	public static float Randomize(this LootQuest.Utils.Range<float> rang)
+	{
+		return UnityEngine.Random.Range (rang.Min, rang.Max);
+	}
+	
+	public static int Randomize(this LootQuest.Utils.Range<int> rang)
+	{
+		return UnityEngine.Random.Range (rang.Min, rang.Max);
+	}
+
 	public static string GetPrefabPath(this GameObject prefab)
 	{
 		//var parentObject = EditorUtility.GetPrefabParent(prefab); 

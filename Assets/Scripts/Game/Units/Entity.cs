@@ -11,6 +11,7 @@ namespace LootQuest.Game.Units
 		protected Vector3 position_;
 		private int groupID_;
 		private bool moving_ = false;
+		private bool firstPositionSet_ = true;
 
 		public Entity()
 		{
@@ -70,6 +71,12 @@ namespace LootQuest.Game.Units
 			set
 			{
 				position_ = new Vector3(value, 0.0f, 0.0f);
+
+				if (firstPositionSet_)
+				{
+					UpdateView();
+					firstPositionSet_ = false;
+				}
 			}
 			
 			get 
@@ -80,7 +87,7 @@ namespace LootQuest.Game.Units
 
 		public virtual void OnRemoveFromGame()
 		{
-
+			firstPositionSet_ = true;
 		}
 
 		public void Stop()
@@ -104,6 +111,11 @@ namespace LootQuest.Game.Units
 		public virtual bool CanAttack(Entity target)
 		{
 			return target != this && target.groupID_ != groupID_;
+		}
+
+		public virtual bool NeedToRemove()
+		{
+			return false;
 		}
 	}
 }

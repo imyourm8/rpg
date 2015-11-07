@@ -6,17 +6,17 @@ namespace LootQuest.Game
 {
     public class CooldownManager<KeyType>
     {
-        private Dictionary<KeyType, long> cooldowns_ = new Dictionary<KeyType, long>();
-        private Func<long> time_;
+		private Dictionary<KeyType, float> cooldowns_ = new Dictionary<KeyType, float>();
+        private Func<float> time_;
 
-        public CooldownManager(Func<long> timeFunc)
+		public CooldownManager(Func<float> timeFunc)
         {
             time_ = timeFunc;
         }
 
-        public void SetCooldown(KeyType key, long cooldown)
+		public void SetCooldown(KeyType key, float cooldown)
         {
-            long cd = time_() + cooldown;
+            float cd = time_() + cooldown;
             if (cooldowns_.ContainsKey(key))
             {
                 cooldowns_[key] = cd;
@@ -32,7 +32,7 @@ namespace LootQuest.Game
             return cooldowns_.ContainsKey(key) && cooldowns_[key] - time_() > 0;
         }
 
-        public long GetCooldown(KeyType key)
+        public float GetCooldown(KeyType key)
         {
             if (!cooldowns_.ContainsKey(key))
             {

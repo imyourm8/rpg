@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+
+using System;
 using System.Collections;
+
 using LootQuest.Game.Units;
 
 namespace LootQuest.Game.Modes {
@@ -49,18 +52,27 @@ namespace LootQuest.Game.Modes {
 
 			GameCamera.GetComponent<PlayerCameraFollower> ().SetTarget (hero.View);
 
-			var enemyEntry = GameData.Enemies.Instance.Data [0];
-			var enemy = UnitExtensions.CreateEnemy ();
-			enemy.Direction = -1;
-			enemy.Init (enemyEntry);
-			Add (enemy);
-
-			enemy.X += 300;
+			LoadTower ();
 		}
 
 		private void LoadTower()
 		{
+			StartCoroutine (StartSpawn ());
+		}
 
+		IEnumerator StartSpawn()
+		{
+			yield return new WaitForSeconds(1.0f);
+			spawner_.Init (1);
+		}
+
+		protected override void OnEntityRemoved (Entity entity)
+		{
+			base.OnEntityRemoved (entity);
+
+			Enemy enemy = entity as Enemy;
+			if (enemy != null && !enemy.IsAlive())
+				spawner_.OnEnemyKilled (enemy);
 		}
 	}
 }

@@ -5,11 +5,7 @@ namespace LootQuest.Game.Spells
 {
 	public class SpellEffectData
 	{
-		public string titleID;
-		public int level;
-		
-		public LootQuest.Game.Spells.SpellEffects.SpellEffectID handler;
-		public LootQuest.Game.Status.EffectID triggeredStatus;
+		public GameData.SpellEffectEntry entry;
 		
 		public float effectPower;
 		public float triggerChance;

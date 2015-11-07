@@ -2,30 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LootQuest.Spells;
 
-namespace LootQuest.Spells
+using LootQuest.Game.Units;
+
+namespace LootQuest.Game.Spells
 {
     partial class Spell
     {
-		/*
-        private void HandleApplyWeaponDamage(SpellEffects.SpellEffectEntry entry)
+        private void HandleApplyWeaponDamage(SpellEffectData entry)
         {
-            AttackEntry attack = caster_.RollWeaponDamage();
-            attack.damage *= entry.effectPower;
-            attack.type = AttackType.PHYSICAL;
-            attack.delay = entry.delay;
+			AttackEntry attack = new AttackEntry ();
+			attack.damage = caster_.RollWeaponDamage();
+            attack.damage *= (1.0f+entry.effectPower);
+            //attack.type = AttackType.PHYSICAL;
+            //attack.delay = entry.delay;
             attack.target = target_;
-            caster_.OnWeaponDamageApply(target_, attack);
+           // caster_.OnWeaponDamageApply(target_, attack);
 
-            var caster = caster_;
-            var target = target_;
-            DelayAction(() =>
-            {
-                caster.Attack(target, attack);
-            }, entry.delay);
+			caster_.Attack (attack);
         }
-
+		/*
         private void HandleApplySpellDamage(SpellEffects.SpellEffectEntry entry)
         {
 

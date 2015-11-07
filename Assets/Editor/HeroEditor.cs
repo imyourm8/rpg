@@ -5,6 +5,7 @@ using System.Collections;
 public class HeroEditor : ConfigurationEditor.IEditorTab 
 {
 	private LootQuest.GameData.HeroEntry hero_;
+	private int selectedSpell_ = 0;
 
 	string ConfigurationEditor.IEditorTab.Title 
 	{
@@ -36,6 +37,13 @@ public class HeroEditor : ConfigurationEditor.IEditorTab
 		EditorGUILayout.BeginVertical ();
 
 		hero_.viewPrefab = (GameObject)EditorGUILayout.ObjectField (hero_.viewPrefab, typeof(GameObject));
+
+		EditorGUILayout.BeginHorizontal (); 
+		var spellNames = SpellTab.Instance ().SpellNames;
+		selectedSpell_ = EditorGUILayout.Popup ("Auto Attack Ability", selectedSpell_, spellNames);
+		if (spellNames.Length > selectedSpell_)
+			hero_.autoAttackAbility = spellNames[selectedSpell_];
+		EditorGUILayout.EndHorizontal ();
 
 		foreach (var att in hero_.Stats) 
 		{

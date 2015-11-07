@@ -12,9 +12,12 @@ namespace LootQuest.Game.Units
 		protected Spells.SpellManager spells_;
 		protected string autoAttackAbility_;
 		private Dictionary<SlotStype, Spell> spellSlots_;
+		private CooldownManager<string> cooldowns_;
 
 		public Unit()
 		{
+			cooldowns_ = new CooldownManager<string>(()=>Time.time);
+
 			var AS = new LootQuest.Game.Attributes.AttackSpeed ().Init(LootQuest.Game.Attributes.AttributeID.AttackSpeed);
 			var dex = new LootQuest.Game.Attributes.Attribute ().Init (LootQuest.Game.Attributes.AttributeID.Dexterity);
 			AS.AddAttribute (dex);
@@ -29,8 +32,8 @@ namespace LootQuest.Game.Units
 			dmgMax.AddAttribute (str);
 
 			stats_.Add (str);
-			stats_.Add (dmgMax);
 			stats_.Add (dmgMin);
+			stats_.Add (dmgMax);
 
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.CritChance));
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.CritDamage));
@@ -48,7 +51,7 @@ namespace LootQuest.Game.Units
 			var spell = new Spells.Spell ();
 			spell.InitFromEntry (id, 1, this);
 			spells_.Add (spell);
-			PutSpellInSlot (spell.Entry.slot, spell);
+			PutSpellInSlot (spell.Data.entry.slot, spell);
 		}
 
 		public Spell GetSpell(SlotStype slot)
@@ -60,7 +63,7 @@ namespace LootQuest.Game.Units
 
 		public bool PutSpellInSlot(SlotStype slot, Spell spell)
 		{
-			if (spell.Entry.slot != slot)
+			if (spell.Data.entry.slot != slot)
 				return false;
 			spellSlots_ [slot] = spell;
 			return true;
@@ -84,22 +87,41 @@ namespace LootQuest.Game.Units
 
 		public bool HasCooldown(string id)
 		{
-			return true;
+			return cooldowns_.HasCooldown(id);
 		}
 
 		public bool CanAutoAttack()
 		{
-			return HasCooldown (autoAttackAbility_);
+			return !HasCooldown (autoAttackAbility_);
+		}
+
+		public float RollWeaponDamage()
+		{
+			float min = stats_.GetFinValue (LootQuest.Game.Attributes.AttributeID.DamageMin);
+			float max = stats_.GetFinValue (LootQuest.Game.Attributes.AttributeID.DamageMax);
+			return Random.Range (min, max);
 		}
 
 		public void PerformAutoAttack()
 		{
 			if (CanAutoAttack ()) 
 			{
-				var spell = spells_.GetSpellInSlot(LootQuest.Game.Spells.SlotStype.AutoAttack);
+				var spell = spells_.GetSpellInSlot (LootQuest.Game.Spells.SlotStype.AutoAttack);
 				if (spell != null)
-					spell.Cast();
+					Cast (spell);
 			}
+		}
+
+		private float GetAutoAttackCooldown()
+		{
+			float attSpeed = stats_.GetFinValue (LootQuest.Game.Attributes.AttributeID.AttackSpeed);
+			return 1.0f / attSpeed;
+		}
+
+		private void Cast(Spell spell)
+		{
+			spell.Cast();
+			cooldowns_.SetCooldown(spell.Data.entry.ID, GetAutoAttackCooldown());
 		}
 
 		public void Cast(string spell)
@@ -112,6 +134,22 @@ namespace LootQuest.Game.Units
 			return base.CanAttack (target);
 		}
 
+		public void Attack(AttackEntry entry)
+		{
+			var health = entry.target.Stats.Get (LootQuest.Game.Attributes.AttributeID.Health);
+			health.ModifyValue (-entry.damage);
+
+			Debug.LogFormat ("Damage done: {0} by {1} health left {2}", entry.damage, this.ToString (), health.FinalValue);
+
+			if (health.FinalValue < 0)
+				Debug.Log ("Target died");
+		}
+
+		public bool IsAlive()
+		{
+			return Stats.GetFinValue (LootQuest.Game.Attributes.AttributeID.Health) > 0.0f;
+		}
+
 		public override void Update ()
 		{
 			base.Update ();
@@ -120,6 +158,11 @@ namespace LootQuest.Game.Units
 			{
 				ai_.Update();
 			}
+		}
+
+		public override bool NeedToRemove ()
+		{
+			return base.NeedToRemove () || !IsAlive();
 		}
 	}
 }

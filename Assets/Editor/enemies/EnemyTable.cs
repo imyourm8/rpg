@@ -164,7 +164,7 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 						var name = enemyNames[spawnChance.nameIndex];
 						var e = new EnemyTableSpawnEntry();
 						e.enemy = enemyList[name];
-						enemies.Add(e);
+						enemies.enemies.Add(e);
 					}
 				}
 
@@ -173,20 +173,20 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 				EditorGUI.indentLevel++;
 
 				EnemyTableSpawnEntry enemyToDel = null;
-				int count = enemies.Count;
+				int count = enemies.enemies.Count;
 				for (int i = 0; i < count; ++i)
 				{
 					EditorGUILayout.BeginHorizontal ();
-					EditorGUILayout.LabelField(enemies[i].enemy.ID);
+					EditorGUILayout.LabelField(enemies.enemies[i].enemy.ID);
 					if (GUILayout.Button("delete"))
 					{
-						enemyToDel = enemies[i];
+						enemyToDel = enemies.enemies[i];
 					}
 					EditorGUILayout.EndHorizontal();
 					EditorGUILayout.BeginHorizontal ();
 					EditorGUILayout.LabelField("weight");
 					EditorGUILayout.Separator();
-					enemies[i].weight = EditorGUILayout.FloatField(enemies[i].weight);
+					enemies.enemies[i].weight = EditorGUILayout.FloatField(enemies.enemies[i].weight);
 					EditorGUILayout.EndHorizontal();
 
 					if (i < count-1)
@@ -194,7 +194,7 @@ public class EnemyTable : ConfigurationEditor.IEditorTab
 				}
 				if (enemyToDel != null)
 				{
-					enemies.Remove(enemyToDel);
+					enemies.enemies.Remove(enemyToDel);
 				}
 				EditorGUI.indentLevel--;
 			}

@@ -24,6 +24,8 @@ namespace LootQuest.Game.Units.AI
 					float moveDir = target_.X - owner_.X;
 					owner_.Direction = Mathf.Sign(moveDir);
 					owner_.Move();
+
+					ResetTarget();
 				} else
 				{
 					owner_.Stop();
@@ -47,13 +49,20 @@ namespace LootQuest.Game.Units.AI
 					return dist1.CompareTo(dist2);
 				});
 
-				target_ = targets[0];
+				foreach(var target in targets)
+				{
+					if (owner_.CanAttack(target))
+					{
+						target_ = target;
+						break;
+					}
+				}
 			}
 		}
 
 		protected bool HasTarget()
 		{
-			return target_ != null;
+			return target_ != null && target_.IsAlive();
 		}
 		
 		protected void ResetTarget()

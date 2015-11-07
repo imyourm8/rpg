@@ -20,5 +20,6 @@ public static class UnitExtensions
 	public static void Return(this Enemy enemy)
 	{
 		pool_.Return (enemy);
+		enemy.View.gameObject.ReturnPooled ();
 	}
 }

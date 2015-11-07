@@ -13,6 +13,8 @@ namespace LootQuest
 
 			GameData.Heroes.Instance.Load ();
 			GameData.Enemies.Instance.Load ();
+			GameData.EnemyTables.Instance.Load ();
+			GameData.Effects.Instance.Load ();
 			GameData.Spells.Instance.Load ();
 			GameData.Towers.Instance.Load ();
 

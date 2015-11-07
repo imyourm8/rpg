@@ -23,7 +23,7 @@ namespace LootQuest.Game.Spells
 			targets_.RemoveAll (
 			delegate(LootQuest.Game.Units.Entity obj) 
 			{
-				return startPoint <= obj.X && endPoint >= obj.X;
+				return !(startPoint <= obj.X && endPoint >= obj.X);
 			});
 
 			ApplyEffectsOnTargets();

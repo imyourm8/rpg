@@ -7,6 +7,7 @@ namespace LootQuest.Utils.ObjectPool
 	public class GlobalGameObjectPooling : SingletonMonobehaviour<GlobalGameObjectPooling>
 	{
 		private Dictionary<GameObject, IObjectPool<GameObject>> pools_;
+		private Dictionary<GameObject, GameObject> objectsByPrefabs_;
 	
 		void Start()
 		{
@@ -16,6 +17,7 @@ namespace LootQuest.Utils.ObjectPool
 				DontDestroyOnLoad(this);
 				
 				pools_ = new Dictionary<GameObject, IObjectPool<GameObject>>();
+				objectsByPrefabs_ = new Dictionary<GameObject, GameObject>();
 			} else 
 			{
 				Destroy(this);
@@ -38,17 +40,21 @@ namespace LootQuest.Utils.ObjectPool
 		
 		public void Return(GameObject obj)
 		{
-			if (pools_.ContainsKey(obj))
+			if (!objectsByPrefabs_.ContainsKey(obj))
 			{
 				throw new UnityException("Can't return example object!");
 			}
-			
-			GetPool(obj).Return(obj);
+			var prefab = objectsByPrefabs_ [obj];
+			GetPool(prefab).Return(obj);
+			objectsByPrefabs_.Remove (obj);
 		}
 		
 		public GameObject Get(GameObject obj)
 		{
-			return GetPool(obj).Get();
+			var pool = GetPool (obj);
+			var pooledObj = pool.Get ();
+			objectsByPrefabs_.Add (pooledObj, obj);
+			return pooledObj;
 		}
 	}
 }

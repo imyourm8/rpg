@@ -34,6 +34,11 @@ namespace LootQuest.GameData
 						stat.SetValue(stats[statID].f);
 					}
 				}
+
+				if (hero.HasField("auto_attack"))
+				{
+					Data.autoAttackAbility = hero["auto_attack"].str;
+				}
 			}
 		}
 
@@ -52,6 +57,8 @@ namespace LootQuest.GameData
 			{
 				stats.AddField(stat.ID.ToString(), stat.Value);
 			}
+
+			obj.AddField ("auto_attack", Data.autoAttackAbility);
 
 			byte[] data = System.Text.Encoding.ASCII.GetBytes (obj.ToString ());
 			file.Write (data, 0, data.Length);

@@ -29,8 +29,11 @@ namespace LootQuest.Game.Units
 
 			AI = Factory.AIFactory.Instance.Create (entry.ai);
 
+			spells_.Clear ();
+
 			if (entry.autoAttackAbility.Length > 0) 
 			{
+				autoAttackAbility_ = entry.autoAttackAbility;
 				LoadSpell(entry.autoAttackAbility);
 			}
 		}

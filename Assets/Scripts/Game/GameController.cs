@@ -12,9 +12,6 @@ namespace LootQuest.Game {
     	
     	[SerializeField]
     	private Camera gameCamera;
-    	
-    	[SerializeField]
-    	private RectTransform gameArea;
 
 		[SerializeField]
 		private GameObject landRoot_;
@@ -22,15 +19,15 @@ namespace LootQuest.Game {
 		private bool started_;
 		protected Land.BaseLand land_;
     	
-		private List<Entity> removeList_;
 		private List<Entity> entities_;
 		private List<Unit> unitCache_;
+		private HashSet<Entity> removeList_;
 
 		public GameController()
 		{
 			entities_ = new List<Entity> ();
 			unitCache_ = new List<Unit> ();
-			removeList_ = new List<Entity> ();
+			removeList_ = new HashSet<Entity> ();
 		}
 
     	void Update () 
@@ -49,14 +46,17 @@ namespace LootQuest.Game {
 
 		private void RemoveAll()
 		{
-			int count = 0;
-			for (int i = 0; i < count; ++i) 
+			foreach(var entity in removeList_)
 			{
-				var entity = removeList_[i];
 				land_.Remove (entity);
 				entities_.Remove (entity);
+				OnEntityRemoved(entity);
 			}
 			removeList_.Clear ();
+		}
+
+		protected virtual void OnEntityRemoved(Entity entity)
+		{
 		}
 
 		protected virtual void UpdateLogic()
@@ -64,7 +64,13 @@ namespace LootQuest.Game {
 			int count = entities_.Count;
 			for (int i = 0; i < count; ++i)
 			{
-				entities_[i].Update();
+				var entity = entities_[i];
+				entity.Update();
+
+				if (entity.NeedToRemove())
+				{
+					Remove(entity);
+				}
 			}
 		}
 
@@ -100,6 +106,7 @@ namespace LootQuest.Game {
 		public void Remove(Units.Entity entity)
 		{
 			removeList_.Add (entity);
+			entity.OnRemoveFromGame ();
 		}
 
 		public float Distance(Entity obj1, Entity obj2)

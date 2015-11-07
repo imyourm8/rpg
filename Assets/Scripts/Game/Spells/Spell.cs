@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ namespace LootQuest.Game.Spells
 		TargetChooseStrategy.ITargetFilter
     {
         //static private ILogger log = LogManager.GetCurrentClassLogger();
-        private GameData.SpellEntry entry_;
+        private SpellData data_;
         private Game.Units.Unit caster_;
 		private Game.Units.Unit target_;
         private Behavior.BaseBehaviour behaviour_;
@@ -45,6 +45,7 @@ namespace LootQuest.Game.Spells
 		{
 			spellEffects_ = new Dictionary<SpellEffectID, Action<SpellEffectData>> ();
 
+			spellEffects_.Add (SpellEffectID.APPLY_DAMAGE, HandleApplyWeaponDamage);
 		}
 
         public void Dispose()
@@ -55,7 +56,7 @@ namespace LootQuest.Game.Spells
             }
 
             caster_ = null;
-            entry_ = null;
+            data_ = null;
         }
 
         public Game.Units.Unit Caster
@@ -63,14 +64,14 @@ namespace LootQuest.Game.Spells
             get { return caster_; }
         }
 
-        public GameData.SpellEntry Entry
+		public SpellData Data
         { 
-            get { return entry_; } 
+            get { return data_; } 
         }
 
         public PreparationResult Prepare()
         {
-            if (caster_.HasCooldown(entry_.ID))
+            if (caster_.HasCooldown(data_.entry.ID))
             {
                 return PreparationResult.NOT_READY;
             }
@@ -92,10 +93,10 @@ namespace LootQuest.Game.Spells
             castPosition_ = caster_.X;
             //choose target by strategy ID and unit mask
 
-			var strat = strategies_[entry_.targetStrategy];
+			var strat = strategies_[data_.entry.targetStrategy];
 			targets_ = strat.FilterTargets(caster_.Game, this);
 
-            switch (entry_.type) 
+			switch (data_.entry.type) 
 			{
 			case SpellType.Melee:
 				HandleMeleeCast();
@@ -118,11 +119,11 @@ namespace LootQuest.Game.Spells
         public void InitFromEntry(string id, int level, Game.Units.Unit owner)
         {
             level_ = level;
-			entry_ = GameData.Spells.Instance.GetEntry (id);
+			data_ = SpellGenerator.Instance.Generate (id);
             caster_ = owner;
 
             castPosition_ = caster_.X;
-            switch (entry_.targetFilter)
+            switch (data_.entry.targetFilter)
             {
                 case SpellTargetFilter.ENEMY:
                     targetFilter_ = EnemyTargetFilter;
@@ -167,7 +168,12 @@ namespace LootQuest.Game.Spells
 
 		private void ApplyEffects(Unit target)
         {
-
+			int count = data_.effects.Count;
+			for (int i = 0; i < count; ++i)
+			{
+				var effect = data_.effects[i];
+				spellEffects_[effect.entry.handler](effect);
+			}
         }
 
         bool TargetChooseStrategy.ITargetFilter.Filter(Entity target)

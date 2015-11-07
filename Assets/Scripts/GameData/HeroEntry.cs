@@ -7,6 +7,7 @@ namespace LootQuest.GameData
 	{
 		public GameObject viewPrefab;
 		public Game.Attributes.AttributeManager Stats;
+		public string autoAttackAbility = "";
 
 		public HeroEntry()
 		{
@@ -15,8 +16,8 @@ namespace LootQuest.GameData
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.AttackSpeed));
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.CritChance));
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.CritDamage));
-			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.DamageMax));
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.DamageMin));
+			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.DamageMax));
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.Dexterity));
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.Health));
 			Stats.Add (new LootQuest.Game.Attributes.Attribute().Init(Game.Attributes.AttributeID.HealthRegeneration));
