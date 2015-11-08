@@ -10,7 +10,7 @@ namespace LootQuest.Game.Spells
 		public void HandleMeleeCast()
 		{
 			//spawn arc
-			float endPoint = caster_.X + caster_.Direction * caster_.Stats.GetFinValue (LootQuest.Game.Attributes.AttributeID.AttackRange);
+			float endPoint = caster_.X + caster_.Direction.x * caster_.Stats.GetFinValue (LootQuest.Game.Attributes.AttributeID.AttackRange);
 			float startPoint = caster_.X;
 
 			if (endPoint < startPoint) 
@@ -27,6 +27,16 @@ namespace LootQuest.Game.Spells
 			});
 
 			ApplyEffectsOnTargets();
+		}
+
+		public void HandleRangeCast()
+		{
+			//create projectile object
+			var projectile = Projectiles.ProjectileExtensions.Create (data_);
+			projectile.Spell = this;
+			projectile.X = caster_.X;
+
+			caster_.Game.Add (projectile);
 		}
 	}
 }

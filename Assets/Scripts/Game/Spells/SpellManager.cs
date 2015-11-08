@@ -30,6 +30,10 @@ namespace LootQuest.Game.Spells
 
 		public void Clear()
 		{
+			foreach (var spell in spells_) 
+			{
+				spell.Value.Return();
+			}
 			spells_.Clear ();
 		}
     }

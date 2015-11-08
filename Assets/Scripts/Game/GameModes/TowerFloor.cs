@@ -45,7 +45,7 @@ namespace LootQuest.Game.Modes {
 			LoadTower ();
 
 			var hero = new Units.Hero ();
-			hero.Direction = 1;
+			hero.Direction = Entity.ToRight;
 			hero.Init (GameData.Heroes.Instance.Data);
 			Add (hero);
 			hero.GroupID = 1;

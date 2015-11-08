@@ -47,7 +47,7 @@ namespace LootQuest.Utils.ObjectPool
 			IncreasePoolSize (Mathf.Min(Mathf.Max (initialSize_, 1), 200));
 		}
 		
-		void IObjectPool<T>.Return(T obj)
+		public void Return(T obj)
 		{
 		#if TRACK_ALL
 			if (!pooledObjects_.Contains(obj))
@@ -60,7 +60,7 @@ namespace LootQuest.Utils.ObjectPool
 			pool_ [--nextIndex_] = obj;
 		}
 		
-		T IObjectPool<T>.Get()
+		public T Get()
 		{
 			if (nextIndex_ >= pool_.Count) 
 			{

@@ -115,9 +115,8 @@ namespace LootQuest.Game
 
 				if (enemyEntry != null)
 				{
-					var enemy = UnitExtensions.CreateEnemy();
-					enemy.Direction = direction_;
-					enemy.Init (enemyEntry);
+					var enemy = UnitExtensions.CreateEnemy(enemyEntry);
+					enemy.Direction = Entity.ToRight.Scale(direction_);
 
 					float spawnPosition = Random.Range(0.0f, spawnPointFluctuation_);
 					enemy.X = camBounds.max.x + camBounds.max.x*spawnOffset_ + spawnPosition;

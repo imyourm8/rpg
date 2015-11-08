@@ -7,9 +7,10 @@ namespace LootQuest
 	{
 		void Start () 
 		{
-			UnitExtensions.InitPool ();
-
 			Game.Spells.Spell.Init ();
+			Game.Spells.SpellExtensions.Init ();
+			Game.Units.UnitExtensions.Init ();
+			Game.Spells.Projectiles.ProjectileExtensions.Init ();
 
 			GameData.Heroes.Instance.Load ();
 			GameData.Enemies.Instance.Load ();

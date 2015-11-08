@@ -106,6 +106,11 @@ namespace LootQuest.Game.Spells
             //caster_.OnSpellActions(this);
         }
 
+		public List<Entity> GetTargets()
+		{
+			return targets_;
+		}
+
 		private void ApplyEffectsOnTargets()
 		{
 			//apply effects on targets

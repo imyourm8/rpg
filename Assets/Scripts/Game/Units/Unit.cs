@@ -38,7 +38,6 @@ namespace LootQuest.Game.Units
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.CritChance));
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.CritDamage));
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.HealthRegeneration));
-			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.MovementSpeed));
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.SpellDamage));
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.AttackRange));
 
@@ -48,7 +47,7 @@ namespace LootQuest.Game.Units
 
 		public void LoadSpell(string id)
 		{
-			var spell = new Spells.Spell ();
+			var spell = SpellExtensions.Create ();;
 			spell.InitFromEntry (id, 1, this);
 			spells_.Add (spell);
 			PutSpellInSlot (spell.Data.entry.slot, spell);
@@ -162,7 +161,7 @@ namespace LootQuest.Game.Units
 
 		public override bool NeedToRemove ()
 		{
-			return base.NeedToRemove () || !IsAlive();
+			return !IsAlive();
 		}
 	}
 }

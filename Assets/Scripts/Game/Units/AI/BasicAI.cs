@@ -21,8 +21,7 @@ namespace LootQuest.Game.Units.AI
 				float dist = owner_.Game.Distance(owner_, target_);
 				if (dist > owner_.Stats.GetFinValue (LootQuest.Game.Attributes.AttributeID.AttackRange))
 				{
-					float moveDir = target_.X - owner_.X;
-					owner_.Direction = Mathf.Sign(moveDir);
+					owner_.Direction = target_.Position - owner_.Position;
 					owner_.Move();
 
 					ResetTarget();

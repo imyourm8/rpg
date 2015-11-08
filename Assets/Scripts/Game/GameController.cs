@@ -99,8 +99,11 @@ namespace LootQuest.Game {
 		public void Add(Units.Entity entity)
 		{
 			entity.Game = this;
+
 			land_.Add (entity);
 			entities_.Add (entity);
+
+			entity.OnAddedToGame ();
 		}
 
 		public void Remove(Units.Entity entity)

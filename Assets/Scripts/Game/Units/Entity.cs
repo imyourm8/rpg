@@ -13,10 +13,13 @@ namespace LootQuest.Game.Units
 		private bool moving_ = false;
 		private bool firstPositionSet_ = true;
 
+		public static Vector2 ToRight = Vector2.right;
+
 		public Entity()
 		{
 			stats_ = new LootQuest.Game.Attributes.AttributeManager ();
 			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init(LootQuest.Game.Attributes.AttributeID.Health));
+			stats_.Add (new LootQuest.Game.Attributes.Attribute ().Init (LootQuest.Game.Attributes.AttributeID.MovementSpeed));
 		}
 
 		public Attributes.AttributeManager Stats
@@ -52,20 +55,51 @@ namespace LootQuest.Game.Units
 		{
 			if (moving_) 
 			{
-				float ms = stats_.GetFinValue(LootQuest.Game.Attributes.AttributeID.MovementSpeed);
-				X += Time.deltaTime * direction_ * ms;
+				float ms = stats_.GetFinValue(LootQuest.Game.Attributes.AttributeID.MovementSpeed) * Time.deltaTime;
+				Position = Position + Direction.Scale(ms);
 				UpdateView();
 			}
 		}
 
-		private float direction_;
-		
-		public float Direction
+		private Vector2 direction_;
+		public Vector2 Direction
 		{
-			set { direction_ = value; }
+			set { direction_ = value; direction_.Normalize(); }
 			get { return direction_; }
 		}
-		
+
+		public Vector2 Position
+		{
+			set 
+			{
+				position_ = new Vector3(value.x, value.y, 0.0f);
+				
+				if (firstPositionSet_)
+				{
+					UpdateView();
+					firstPositionSet_ = false;
+				}
+			}
+			
+			get { return new Vector2(position_.x, position_.y); }
+		}
+
+		public float Y
+		{
+			set 
+			{
+				position_ = new Vector3(value, 0.0f, 0.0f);
+				
+				if (firstPositionSet_)
+				{
+					UpdateView();
+					firstPositionSet_ = false;
+				}
+			}
+
+			get { return position_.y; }
+		}
+
 		public float X
 		{
 			set
@@ -79,9 +113,14 @@ namespace LootQuest.Game.Units
 				}
 			}
 			
-			get 
+			get { return position_.x; }
+		}
+
+		public virtual void OnAddedToGame()
+		{
+			if (view_ != null) 
 			{
-				return position_.x;
+				view_.Reset();
 			}
 		}
 

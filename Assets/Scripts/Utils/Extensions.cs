@@ -7,6 +7,13 @@ using System.Collections.Generic;
 
 public static class Extensions
 {
+	public static Vector2 Scale(this Vector2 vec, float value)
+	{
+		vec.x *= value;
+		vec.y *= value;
+		return vec;
+	}
+
 	public static float Randomize(this LootQuest.Utils.Range<float> rang)
 	{
 		return UnityEngine.Random.Range (rang.Min, rang.Max);
@@ -20,7 +27,8 @@ public static class Extensions
 	public static string GetPrefabPath(this GameObject prefab)
 	{
 		//var parentObject = EditorUtility.GetPrefabParent(prefab); 
-
+		if (prefab == null)
+			return "";
 		return AssetDatabase.GetAssetPath(prefab);
 	}
 

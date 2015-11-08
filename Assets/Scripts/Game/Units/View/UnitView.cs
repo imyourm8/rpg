@@ -21,5 +21,8 @@ namespace LootQuest.Game.Units.View
 
 		protected virtual void OnDeath()
 		{}
+
+		public virtual void Reset()
+		{}
 	}
 }

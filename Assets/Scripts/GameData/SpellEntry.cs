@@ -5,6 +5,13 @@ using LootQuest.Utils;
 
 namespace LootQuest.GameData
 {
+	public class ProjectileEntry
+	{
+		public Game.Spells.Projectiles.Behaviours.BehaviourID behaviour = Game.Spells.Projectiles.Behaviours.BehaviourID.Dummy;
+		public GameObject view;
+		public float speed = 100.0f;
+	}
+
 	public class SpellEntry 
 	{
 		public int level = 1;
@@ -19,6 +26,9 @@ namespace LootQuest.GameData
 		public LootQuest.Game.Spells.SpellTargetFilter targetFilter;
 
 		public Range<float> cooldown = new Range<float>();
+
+		public GameObject view;
+		public ProjectileEntry projectile = new ProjectileEntry();
 
 		public SpellEntry()
 		{

@@ -14,6 +14,8 @@ namespace LootQuest.Game.Attributes
 
 		public void Add(Attribute att)
 		{
+			if (attributes_.ContainsKey (att.ID))
+				return;
 			attributes_.Add (att.ID, att);
 		}
 

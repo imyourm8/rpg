@@ -190,6 +190,32 @@ public class SpellTab
 		currentSpell_.type = (LootQuest.Game.Spells.SpellType)EditorGUILayout.EnumPopup ("", currentSpell_.type);
 		EditorGUILayout.EndHorizontal ();
 
+		if (currentSpell_.type == LootQuest.Game.Spells.SpellType.Range) 
+		{
+			EditorGUILayout.LabelField ("Projectile Parameters");
+			EditorGUI.indentLevel++;
+			GUILayout.Box("", EditorHelper.Line);
+
+			EditorGUILayout.BeginHorizontal ();
+			currentSpell_.projectile.behaviour = (LootQuest.Game.Spells.Projectiles.Behaviours.BehaviourID)EditorGUILayout.EnumPopup ("Behaviour", currentSpell_.projectile.behaviour);
+			EditorGUILayout.EndHorizontal ();
+
+			EditorGUILayout.BeginHorizontal ();
+			GUILayout.Label ("Speed", EditorStyles.label);
+			EditorGUILayout.Separator ();
+			currentSpell_.projectile.speed = EditorGUILayout.FloatField (currentSpell_.projectile.speed);
+			EditorGUILayout.EndHorizontal ();
+
+			EditorGUILayout.BeginHorizontal ();
+			GUILayout.Label ("View", EditorStyles.label);
+			EditorGUILayout.Separator ();
+			currentSpell_.projectile.view = (GameObject)EditorGUILayout.ObjectField (currentSpell_.projectile.view, typeof(GameObject), false);
+			EditorGUILayout.EndHorizontal ();
+
+			GUILayout.Box("", EditorHelper.Line);
+			EditorGUI.indentLevel--;
+		}
+
 		EditorGUILayout.BeginHorizontal ();
 		EditorGUILayout.LabelField ("Target strategy");
 		EditorGUILayout.Separator ();
@@ -206,6 +232,12 @@ public class SpellTab
 		GUILayout.Label ("Cooldown", EditorStyles.label);
 		EditorGUILayout.Separator ();
 		EditorHelper.DrawRange(currentSpell_.cooldown);
+		EditorGUILayout.EndHorizontal ();
+
+		EditorGUILayout.BeginHorizontal ();
+		GUILayout.Label ("View", EditorStyles.label);
+		EditorGUILayout.Separator ();
+		currentSpell_.view = (GameObject)EditorGUILayout.ObjectField (currentSpell_.view, typeof(GameObject), false);
 		EditorGUILayout.EndHorizontal ();
 
 		#region Effects

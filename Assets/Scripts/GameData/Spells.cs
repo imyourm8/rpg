@@ -46,6 +46,31 @@ namespace LootQuest.GameData
 						entry.effects.Add(eff.str);
 					}
 
+					if (spell.HasField("view"))
+					{
+						var viewPath = spell["view"].str;
+						viewPath = viewPath.Replace("Assets/Resources/", "");
+						viewPath = viewPath.Replace(".prefab", "");
+						if (viewPath != null && viewPath.Length > 0)
+							entry.view = Resources.Load<GameObject>(viewPath);
+					}
+
+					if (spell.HasField("projectile"))
+					{
+						var projectileData = spell["projectile"];
+						entry.projectile.behaviour = (LootQuest.Game.Spells.Projectiles.Behaviours.BehaviourID)projectileData["behaviour"].i;
+						entry.projectile.speed = projectileData["speed"].f;
+
+						if (projectileData.HasField("view"))
+					    {
+							var viewPath = projectileData["view"].str;
+							viewPath = viewPath.Replace("Assets/Resources/", "");
+							viewPath = viewPath.Replace(".prefab", "");
+							if (viewPath != null && viewPath.Length > 0)
+								entry.projectile.view = Resources.Load<GameObject>(viewPath);
+						}
+					}
+
 					entries_.Add(entry.ID, entry);
 					Data.Add(entry);
 				}
@@ -71,6 +96,9 @@ namespace LootQuest.GameData
 				spellData.AddField("cooldown", RangeUtils.ToJson(spell.cooldown));
 				spellData.AddField("level", spell.level);
 
+				if (spell.view != null)
+					spellData.AddField("view", spell.view.GetPrefabPath());
+
 				JSONObject effects = new JSONObject(JSONObject.Type.ARRAY);
 				spellData.AddField("effects", effects);
 
@@ -78,6 +106,14 @@ namespace LootQuest.GameData
 				{
 					effects.Add(eff);
 				}
+
+				JSONObject projectile = new JSONObject();
+				spellData.AddField("projectile", projectile);
+
+				projectile.AddField("behaviour", (int)spell.projectile.behaviour);
+				projectile.AddField("speed", spell.projectile.speed);
+				if (spell.projectile.view != null)
+					projectile.AddField("view", spell.projectile.view.GetPrefabPath());
 			}
 
 			byte[] data = System.Text.Encoding.ASCII.GetBytes (obj.ToString ());
