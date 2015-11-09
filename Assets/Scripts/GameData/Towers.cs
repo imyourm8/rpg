@@ -108,6 +108,10 @@ namespace LootQuest.GameData
 			
 			file.Flush ();
 			file.Close ();
+
+			#if UNITY_EDITOR
+			UnityEditor.AssetDatabase.ImportAsset(Path);
+			#endif
 		}
 	}
 }

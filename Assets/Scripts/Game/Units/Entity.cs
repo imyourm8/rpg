@@ -61,6 +61,11 @@ namespace LootQuest.Game.Units
 			}
 		}
 
+		public Vector2 Center()
+		{
+			return Position + View.GetCenter ();
+		}
+
 		private Vector2 direction_;
 		public Vector2 Direction
 		{

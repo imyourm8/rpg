@@ -34,7 +34,9 @@ namespace LootQuest.Game.Spells
 			//create projectile object
 			var projectile = Projectiles.ProjectileExtensions.Create (data_);
 			projectile.Spell = this;
-			projectile.X = caster_.X;
+			projectile.Position = caster_.Position + caster_.View.GetProjectileSpawnPoint ();
+			projectile.GroupID = caster_.GroupID;
+			projectile.Move ();
 
 			caster_.Game.Add (projectile);
 		}

@@ -93,25 +93,26 @@ namespace LootQuest.Game
 				EnemyType enemyType = EnemyType.Normal;
 				int j = 0;
 				while (j < table_.spawnChances.Count && 
-				       table_.spawnChances[j].realWeight > 0 && 
-				       table_.spawnChances[j].realWeight >= typeRoll)
+				       (table_.spawnChances[j].realWeight == 0 ||
+				       table_.spawnChances[j].realWeight < typeRoll))
 				{
-					enemyType = table_.spawnChances[j].enemyType;
 					j++;
 				}
+				enemyType = table_.spawnChances[j].enemyType;
 
 				//now pick enemy from enemy list
 				j = 0;
 				var enemyList = table_.enemies[enemyType].enemies;
-				float totalEnemyWeight = Random.Range(0, table_.enemies[enemyType].totalWeight);
+				float enemyRoll = Random.Range(0, table_.enemies[enemyType].totalWeight);
 				EnemyEntry enemyEntry = null;
 				while (j < enemyList.Count && 
-				       enemyList[j].realWeight > 0.0f && 
-				       enemyList[j].realWeight >= totalEnemyWeight)
+				       (enemyList[j].realWeight.Equals(0.0f) || 
+				       enemyList[j].realWeight < enemyRoll))
 				{
-					enemyEntry = enemyList[j].enemy;
 					j++;
 				}
+
+				enemyEntry = enemyList[j].enemy;
 
 				if (enemyEntry != null)
 				{
@@ -119,7 +120,7 @@ namespace LootQuest.Game
 					enemy.Direction = Entity.ToRight.Scale(direction_);
 
 					float spawnPosition = Random.Range(0.0f, spawnPointFluctuation_);
-					enemy.X = camBounds.max.x + camBounds.max.x*spawnOffset_ + spawnPosition;
+					enemy.X = camBounds.max.x + camBounds.size.x*spawnOffset_ + spawnPosition;
 
 					game_.Add (enemy);
 				}

@@ -62,7 +62,7 @@ namespace LootQuest.GameData
 			{
 				if (chance.weight < 1) continue;
 				TotalSpawnChanceWeight += chance.weight;
-				chance.realWeight = TotalSpawnChanceWeight;
+				chance.realWeight = TotalSpawnChanceWeight; 
 			}
 		}
 		
@@ -70,7 +70,7 @@ namespace LootQuest.GameData
 		{
 			foreach (var table in enemies) 
 			{
-				table.Value.enemies.Sort((EnemyTableSpawnEntry e1, EnemyTableSpawnEntry e2)=>{ return e1.weight.CompareTo(e2); });
+				table.Value.enemies.Sort((EnemyTableSpawnEntry e1, EnemyTableSpawnEntry e2)=>{ return e1.weight.CompareTo(e2.weight); });
 
 				foreach(var entry in table.Value.enemies)
 				{

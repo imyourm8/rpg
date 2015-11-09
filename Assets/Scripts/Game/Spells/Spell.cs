@@ -101,6 +101,9 @@ namespace LootQuest.Game.Spells
 			case SpellType.Melee:
 				HandleMeleeCast();
 				break;
+			case SpellType.Range:
+				HandleRangeCast();
+				break;
 			}
 
             //caster_.OnSpellActions(this);
@@ -111,13 +114,18 @@ namespace LootQuest.Game.Spells
 			return targets_;
 		}
 
+		public void ApplyEffectsOnTarget(Unit target)
+		{
+			target_ = target;
+			ApplyEffects(target_);
+		}
+
 		private void ApplyEffectsOnTargets()
 		{
 			//apply effects on targets
 			foreach (var target in targets_)
 			{
-				target_ = target as Unit;
-				ApplyEffects(target_);
+				ApplyEffectsOnTarget(target as Unit);
 			}
 		}
 

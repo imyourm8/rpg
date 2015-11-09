@@ -31,7 +31,6 @@ namespace LootQuest.Game.Modes {
 		{
 			base.Prepare ();
 
-			var gameCamBounds = Utils.CameraUtils.OrthographicBounds(GameCamera);
 			/*
 			var left = battlefield_.transform.InverseTransformPoint(gameCamBounds.min);
 			var right = battlefield_.transform.InverseTransformPoint(gameCamBounds.max);
@@ -49,6 +48,7 @@ namespace LootQuest.Game.Modes {
 			hero.Init (GameData.Heroes.Instance.Data);
 			Add (hero);
 			hero.GroupID = 1;
+			hero.Move ();
 
 			GameCamera.GetComponent<PlayerCameraFollower> ().SetTarget (hero.View);
 

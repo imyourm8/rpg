@@ -10,16 +10,31 @@ namespace LootQuest.Game.Spells.Projectiles.Behaviours
 		public IBaseBehaviour Behaviour
 		{
 			set { behaviour_ = value; }
+			protected get { return behaviour_; }
+		}
+
+		private Projectile projectile_;
+		public Projectile Projectile
+		{
+			set 
+			{ 
+				projectile_ = value; 
+				if (behaviour_ != null)
+					behaviour_.Projectile = value;
+			}
+			protected get { return projectile_; }
 		}
 
 		public virtual void Prepare()
 		{
-			behaviour_.Prepare ();
+			if (behaviour_ != null)
+				behaviour_.Prepare ();
 		}
 		
 		public virtual void Update()
 		{
-			behaviour_.Update ();
+			if (behaviour_ != null)
+				behaviour_.Update ();
 		}
 	}
 }

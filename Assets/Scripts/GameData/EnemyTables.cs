@@ -67,7 +67,8 @@ namespace LootQuest.GameData {
 
 		public void Save()
 		{
-			var file = File.Create("Assets/Resources/GameData/enemy_tables.json.txt");
+			var path = "Assets/Resources/GameData/enemy_tables.json.txt";
+			var file = File.Create(path);
 			JSONObject obj = new JSONObject (JSONObject.Type.ARRAY);
 
 			foreach (var table in Data) 
@@ -109,6 +110,10 @@ namespace LootQuest.GameData {
 			
 			file.Flush ();
 			file.Close ();
+
+			#if UNITY_EDITOR
+			UnityEditor.AssetDatabase.ImportAsset(path);
+			#endif
 		}
 	}
 }

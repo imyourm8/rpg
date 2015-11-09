@@ -24,5 +24,15 @@ namespace LootQuest.Game.Units.View
 
 		public virtual void Reset()
 		{}
+
+		public virtual Vector2 GetProjectileSpawnPoint()
+		{
+			return Vector2.zero;
+		}
+
+		public virtual Vector2 GetCenter()
+		{
+			return Vector2.zero;
+		}
 	}
 }

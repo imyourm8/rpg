@@ -270,9 +270,14 @@ public class MobEditor : ConfigurationEditor.IEditorTab
 
 		EditorGUILayout.BeginHorizontal (); 
 		var spellNames = SpellTab.Instance ().SpellNames;
-		selectedSpell_ = EditorGUILayout.Popup ("Auto Attack Ability", selectedSpell_, spellNames);
-		if (spellNames.Length > selectedSpell_)
-			currentModel_.autoAttackAbility = spellNames[selectedSpell_];
+		if (spellNames.Length > 0) 
+		{
+			currentModel_.autoAttackAbility = Array.Find(spellNames, x=>x==currentModel_.autoAttackAbility);
+			selectedSpell_ = Array.IndexOf(spellNames, currentModel_.autoAttackAbility);
+			selectedSpell_ = EditorGUILayout.Popup ("Auto Attack Ability", selectedSpell_, spellNames);
+			if (spellNames.Length > selectedSpell_)
+				currentModel_.autoAttackAbility = spellNames [selectedSpell_];
+		}
 		EditorGUILayout.EndHorizontal ();
 
 		foreach (var att in currentModel_.Stats) 

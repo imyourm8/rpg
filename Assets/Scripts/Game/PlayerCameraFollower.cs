@@ -29,7 +29,6 @@ namespace LootQuest.Game
 		void Start()
 		{
 			camera_ = GetComponent<Camera> ();
-			prevTargetPosition_ = target.transform.localPosition;
 
 			targetPos_ = transform.position;
 			z_ = transform.position.z;
@@ -68,6 +67,7 @@ namespace LootQuest.Game
 		public void SetTarget(GameObject t)
 		{
 			target = t;
+			prevTargetPosition_ = target.transform.localPosition;
 		}
 	}
 }

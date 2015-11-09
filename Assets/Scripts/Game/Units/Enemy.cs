@@ -31,11 +31,17 @@ namespace LootQuest.Game.Units
 
 			spells_.Clear ();
 
+
 			if (entry.autoAttackAbility.Length > 0) 
 			{
 				autoAttackAbility_ = entry.autoAttackAbility;
 				LoadSpell(entry.autoAttackAbility);
 			}
+		}
+
+		public void ScaleStatsWithTower(GameData.TowerEntry tower)
+		{
+
 		}
 	}
 }

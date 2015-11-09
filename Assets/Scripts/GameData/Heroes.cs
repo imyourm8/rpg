@@ -44,7 +44,8 @@ namespace LootQuest.GameData
 
 		public void Save()
 		{
-			var file = File.Create("Assets/Resources/GameData/heroes.json.txt");
+			var path = "Assets/Resources/GameData/heroes.json.txt";
+			var file = File.Create(path);
 			JSONObject obj = new JSONObject ();
 
 			if (Data.viewPrefab != null)
@@ -65,6 +66,10 @@ namespace LootQuest.GameData
 			
 			file.Flush ();
 			file.Close ();
+
+			#if UNITY_EDITOR
+			UnityEditor.AssetDatabase.ImportAsset(path);
+			#endif
 		}
 	}
 }

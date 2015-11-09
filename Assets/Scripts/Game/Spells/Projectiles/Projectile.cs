@@ -9,6 +9,8 @@ namespace LootQuest.Game.Spells.Projectiles
 {
 	public class Projectile : Entity
 	{
+		private float radius_ = 0.0f;
+
 		private Spell spell_;
 		public Spell Spell
 		{
@@ -21,13 +23,6 @@ namespace LootQuest.Game.Spells.Projectiles
 		{
 			set { effect_ = value; }
 			get { return effect_; }
-		}
-
-		private float radius_;
-		public float Radius
-		{
-			set { radius_ = value; }
-			get { return radius_; }
 		}
 
 		private bool remove_ = false;
@@ -45,7 +40,9 @@ namespace LootQuest.Game.Spells.Projectiles
 		public void Init(Game.Spells.SpellData spell)
 		{
 			remove_ = false;
-			View = spell.entry.view.GetPooled ().GetComponent<Game.Units.View.SpriteView> ();
+			var viewPrefab = spell.entry.view.GetPooled ();
+			View = viewPrefab.GetComponent<Game.Units.View.SpriteView> ();
+			radius_ = viewPrefab.GetComponentsInChildren<CircleCollider2D> (true)[0].radius;
 			stats_.Get (LootQuest.Game.Attributes.AttributeID.MovementSpeed).SetValue (spell.entry.projectile.speed);
 			Behaviour = ProjectileExtensions.CreateBehaviour (spell.entry.projectile.behaviour);
 		}
@@ -69,6 +66,8 @@ namespace LootQuest.Game.Spells.Projectiles
 				behaviour_.Return();
 				behaviour_ = null;
 			}
+
+			this.Return ();
 		}
 
 		public override bool NeedToRemove ()
@@ -81,6 +80,21 @@ namespace LootQuest.Game.Spells.Projectiles
 			behaviour_.Update ();
 
 			base.Update ();
+
+			bool pierce = spell_.Data.entry.projectile.pierce;
+			var targets = spell_.GetTargets ();
+			int count = targets.Count;
+			for (int i = 0; i < count; ++i) 
+			{
+				var target = targets[i] as Unit;
+
+				if (target != null && game_.Distance(target, this) <= radius_)
+				{
+					spell_.ApplyEffectsOnTarget(target);
+					Remove();
+					if (!pierce) break;
+				}
+			}
 		}
 	}
 }

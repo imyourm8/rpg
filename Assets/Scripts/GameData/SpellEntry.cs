@@ -10,6 +10,7 @@ namespace LootQuest.GameData
 		public Game.Spells.Projectiles.Behaviours.BehaviourID behaviour = Game.Spells.Projectiles.Behaviours.BehaviourID.Dummy;
 		public GameObject view;
 		public float speed = 100.0f;
+		public bool pierce = false;
 	}
 
 	public class SpellEntry 

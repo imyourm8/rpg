@@ -24,7 +24,19 @@ namespace LootQuest.Game.Spells.Projectiles.Behaviours
 
 			if (target_ != null) 
 			{
-				var dir = target_.Position - Projectile.Position;
+				var distToTarget = Projectile.Game.Distance(Projectile, target_);
+				var nextStep = Projectile.Stats.GetFinValue(LootQuest.Game.Attributes.AttributeID.MovementSpeed) * Time.deltaTime;
+
+				if (nextStep < distToTarget)
+				{
+					var targetPosition = target_.Center();
+					var dir = targetPosition - Projectile.Position;
+					dir.Normalize();
+					Projectile.Direction = dir;
+				} else 
+				{
+					Projectile.Position = target_.Center();
+				}
 			}
 		}
 	}

@@ -18,6 +18,8 @@ namespace LootQuest.Game.Attributes
 		MovementSpeed,
 		AttackRange,
 		Defense,
-		Damage
+		Damage,
+		Experience,
+		Level
 	}
 }

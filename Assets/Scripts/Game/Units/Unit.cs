@@ -13,10 +13,12 @@ namespace LootQuest.Game.Units
 		protected string autoAttackAbility_;
 		private Dictionary<SlotStype, Spell> spellSlots_;
 		private CooldownManager<string> cooldowns_;
+		protected LevelManager lvlManager_;
 
 		public Unit()
 		{
 			cooldowns_ = new CooldownManager<string>(()=>Time.time);
+			lvlManager_ = new LevelManager ();
 
 			var AS = new LootQuest.Game.Attributes.AttackSpeed ().Init(LootQuest.Game.Attributes.AttributeID.AttackSpeed);
 			var dex = new LootQuest.Game.Attributes.Attribute ().Init (LootQuest.Game.Attributes.AttributeID.Dexterity);
@@ -77,6 +79,7 @@ namespace LootQuest.Game.Units
 		public override void OnRemoveFromGame ()
 		{
 			base.OnRemoveFromGame ();
+			//cooldowns_.Reset ();
 		}
 
 		public float GetDamageRoll()

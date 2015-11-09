@@ -7,6 +7,7 @@ namespace LootQuest
 	{
 		void Start () 
 		{
+
 			Game.Spells.Spell.Init ();
 			Game.Spells.SpellExtensions.Init ();
 			Game.Units.UnitExtensions.Init ();

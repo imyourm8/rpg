@@ -5,12 +5,17 @@ namespace LootQuest.Game.Land
 {
 	public class BaseLand
 	{
-		private GameObject root_;
+		protected Camera camera_;
+		protected GameObject root_;
 
-		public void Init(GameObject landContainer)
+		public void Init(GameObject landContainer, Camera camera)
 		{
 			root_ = landContainer;
+			camera_ = camera;
 		}
+
+		public virtual void Prepare()
+		{}
 
 		public void Add(Units.Entity entity)
 		{
@@ -20,6 +25,11 @@ namespace LootQuest.Game.Land
 		public void Remove(Units.Entity entity)
 		{
 			(entity.View as GameObject).Detach ();
+		}
+
+		public virtual void Update()
+		{
+
 		}
 	}
 }

@@ -69,6 +69,9 @@ namespace LootQuest.GameData
 							if (viewPath != null && viewPath.Length > 0)
 								entry.projectile.view = Resources.Load<GameObject>(viewPath);
 						}
+
+						if (projectileData.HasField("pirce"))
+							entry.projectile.pierce = projectileData["pierce"].b;
 					}
 
 					entries_.Add(entry.ID, entry);
@@ -79,7 +82,8 @@ namespace LootQuest.GameData
 
 		public void Save()
 		{
-			var file = File.Create("Assets/Resources/GameData/spells.json.txt");
+			var path = "Assets/Resources/GameData/spells.json.txt";
+			var file = File.Create(path);
 			JSONObject obj = new JSONObject (JSONObject.Type.ARRAY);
 
 			foreach (var spell in Data) 
@@ -110,6 +114,7 @@ namespace LootQuest.GameData
 				JSONObject projectile = new JSONObject();
 				spellData.AddField("projectile", projectile);
 
+				projectile.AddField("pierce", spell.projectile.pierce);
 				projectile.AddField("behaviour", (int)spell.projectile.behaviour);
 				projectile.AddField("speed", spell.projectile.speed);
 				if (spell.projectile.view != null)
@@ -121,6 +126,10 @@ namespace LootQuest.GameData
 			
 			file.Flush ();
 			file.Close ();
+
+			#if UNITY_EDITOR
+			UnityEditor.AssetDatabase.ImportAsset(path);
+			#endif
 		}
 	}
 }

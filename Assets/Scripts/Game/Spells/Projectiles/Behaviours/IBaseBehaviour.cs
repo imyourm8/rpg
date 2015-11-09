@@ -7,5 +7,15 @@ namespace LootQuest.Game.Spells.Projectiles.Behaviours
 	{
 		void Prepare ();	
 		void Update ();
+
+		IBaseBehaviour Behaviour 
+		{
+			set;
+		}
+
+		Projectile Projectile 
+		{
+			set;
+		}
 	}
 }

@@ -207,6 +207,12 @@ public class SpellTab
 			EditorGUILayout.EndHorizontal ();
 
 			EditorGUILayout.BeginHorizontal ();
+			GUILayout.Label ("Pierce", EditorStyles.label);
+			EditorGUILayout.Separator ();
+			currentSpell_.projectile.pierce = EditorGUILayout.Toggle(currentSpell_.projectile.pierce);
+			EditorGUILayout.EndHorizontal ();
+
+			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("View", EditorStyles.label);
 			EditorGUILayout.Separator ();
 			currentSpell_.projectile.view = (GameObject)EditorGUILayout.ObjectField (currentSpell_.projectile.view, typeof(GameObject), false);

@@ -87,7 +87,8 @@ namespace LootQuest.GameData
 
 		public void Save()
 		{
-			var file = File.Create("Assets/Resources/GameData/enemies.json.txt");
+			var path = "Assets/Resources/GameData/enemies.json.txt";
+			var file = File.Create(path);
 			JSONObject obj = new JSONObject (JSONObject.Type.ARRAY);
 
 			foreach (var enemy in Data) 
@@ -115,7 +116,7 @@ namespace LootQuest.GameData
 				}
 
 				JSONObject spellsObj = new JSONObject(JSONObject.Type.ARRAY);
-				enemyObj.AddField("spells", enemyObj);
+				enemyObj.AddField("spells", spellsObj);
 
 				foreach(var spells in enemy.spells)
 				{
@@ -143,6 +144,10 @@ namespace LootQuest.GameData
 
 			file.Flush ();
 			file.Close ();
+
+			#if UNITY_EDITOR
+			UnityEditor.AssetDatabase.ImportAsset(path);
+			#endif
 		}
 	}
 }

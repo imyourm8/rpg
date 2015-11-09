@@ -22,12 +22,14 @@ namespace LootQuest.Game {
 		private List<Entity> entities_;
 		private List<Unit> unitCache_;
 		private HashSet<Entity> removeList_;
+		private HashSet<Entity> addList_;
 
 		public GameController()
 		{
 			entities_ = new List<Entity> ();
 			unitCache_ = new List<Unit> ();
 			removeList_ = new HashSet<Entity> ();
+			addList_ = new HashSet<Entity> ();
 		}
 
     	void Update () 
@@ -35,7 +37,9 @@ namespace LootQuest.Game {
 			if (!started_)
 				return;
 
+			land_.Update ();
 			RemoveAll ();
+			AddAll();
 			UpdateLogic ();
     	}
 
@@ -53,6 +57,18 @@ namespace LootQuest.Game {
 				OnEntityRemoved(entity);
 			}
 			removeList_.Clear ();
+		}
+
+		private void AddAll()
+		{
+			foreach (var entity in addList_) 
+			{
+				land_.Add (entity);
+				entities_.Add (entity);
+				
+				entity.OnAddedToGame ();
+			}
+			addList_.Clear ();
 		}
 
 		protected virtual void OnEntityRemoved(Entity entity)
@@ -77,7 +93,8 @@ namespace LootQuest.Game {
 		protected virtual void Prepare()
 		{
 			land_ = new Land.LandTilling ();
-			land_.Init (landRoot_);
+			land_.Init (landRoot_, gameCamera);
+			land_.Prepare ();
 		}
 
 		public override void OnStart ()
@@ -100,10 +117,7 @@ namespace LootQuest.Game {
 		{
 			entity.Game = this;
 
-			land_.Add (entity);
-			entities_.Add (entity);
-
-			entity.OnAddedToGame ();
+			addList_.Add (entity);
 		}
 
 		public void Remove(Units.Entity entity)
