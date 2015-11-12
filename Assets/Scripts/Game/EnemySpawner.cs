@@ -31,39 +31,45 @@ namespace LootQuest.Game
 		private EnemyTableEntry table_;
 		private int groupsSpawned_ = 0;
 		private int groupsToBeSpawned_ = 0;
+		private Tower tower_;
 
-		public void Init(int level)
+		public void Init(Tower tower)
 		{
-			var tower = GameData.Towers.Instance.GetTower (level);
-			//pick enemy table for spawning by level
-			//if no table that lower by level not found - pick the highest lvl table
-			EnemyTableEntry maxLvlTable = null;
-			int highestTableLvl = 0;
-			foreach (var table in tower.EnemyTables) 
-			{
-				if (table.maxTowerLevel <= level)
-				{
-					table_ = table;
-					break;
-				}
+			tower_ = tower;
 
-				if (highestTableLvl <= level)
-				{
-					maxLvlTable = table;
-					highestTableLvl = level;
-				}
-			}
+            //pick enemy table for spawning by level
+            //if no table that lower by level not found - pick the highest lvl table
+            EnemyTableEntry maxLvlTable = null;
+            int highestTableLvl = 0;
+            int level = tower.Level;
+            foreach (var table in tower.Entry.EnemyTables)
+            {
+                if (table.maxTowerLevel <= level)
+                {
+                    table_ = table;
+                    break;
+                }
 
-			if (maxLvlTable != null) 
-			{
-				table_ = maxLvlTable;
-			}
+                if (highestTableLvl <= level)
+                {
+                    maxLvlTable = table;
+                    highestTableLvl = level;
+                }
+            }
+
+            if (maxLvlTable != null)
+            {
+                table_ = maxLvlTable;
+            }
 
 			groupsToBeSpawned_ = table_.groupCount.Randomize ();
 			groupsSpawned_ = 0;
-
-			SpawnNextGroup ();
 		}
+
+        public void Start()
+        {
+            SpawnNextGroup();
+        }
 
 		public void OnEnemyKilled(Enemy enemy)
 		{
@@ -121,6 +127,8 @@ namespace LootQuest.Game
 
 					float spawnPosition = Random.Range(0.0f, spawnPointFluctuation_);
 					enemy.X = camBounds.max.x + camBounds.size.x*spawnOffset_ + spawnPosition;
+
+					enemy.ScaleStatsWithTower(tower_);
 
 					game_.Add (enemy);
 				}

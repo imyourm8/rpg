@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Item : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
+namespace LootQuest.Game.Items
+{
+	public enum ItemType
+	{
+		Loot,
+		Currency
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public class Item 
+	{
+		private int count_ = 1;
+		private string id_;
+		private Finance.CurrencyID currency_;
+		private ItemType itemType_;
 	}
 }

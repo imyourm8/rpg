@@ -1,5 +1,13 @@
 ﻿using UnityEngine;
+using UnityEditor;
+
 using System.Collections;
+using System.Collections.Generic;
+
+using LootQuest;
+using LootQuest.Game.Items;
+using LootQuest.Game.Finance;
+using LootQuest.GameData;
 
 public class ItemEditor : ConfigurationEditor.IEditorTab
 {
@@ -9,8 +17,121 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
 		}
 	}
 
+    private List<ItemEntry> items_;
+    private LootQuest.GameData.ItemEntry item_;
+    private Vector2 scrollPosition_;
+    private SpriteCollection itemSprites_;
+
+    public ItemEditor()
+    { 
+        itemSprites_ = Resources.Load<GameObject>("Prefabs/SpriteCollections/ItemIconsCollection").GetComponent<SpriteCollection>();
+        LootQuest.GameData.Items.Instance.Load();
+        items_ = LootQuest.GameData.Items.Instance.Data;
+    }
+
+    private void CheckItems()
+    {}
+
 	void ConfigurationEditor.IEditorTab.OnGUI ()
 	{
+        EditorGUILayout.BeginVertical();
 
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Save"))
+        {
+            LootQuest.GameData.Items.Instance.Save();
+        }
+
+        if (item_ != null && GUILayout.Button("Remove Item"))
+        {
+            items_.Remove(item_);
+            item_ = null;
+        }
+
+        if (GUILayout.Button("Check"))
+        {
+            CheckItems();
+        }
+
+        if (GUILayout.Button("Add Item"))
+        {
+            item_ = new ItemEntry();
+            items_.Add(item_);
+        }
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Separator();
+        EditorGUILayout.BeginHorizontal();
+
+        DrawItemList();
+
+        if (item_ != null)
+        {
+            DrawItem();
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.EndVertical();
 	}
+
+    private void DrawItemList()
+    {
+        scrollPosition_ = EditorGUILayout.BeginScrollView(scrollPosition_, GUILayout.MaxWidth(400));
+
+        int total = items_.Count;
+        ItemEntry nextModel = null;
+        for (int i = 0; i < total; ++i)
+        {
+            var model = items_[i];
+            if (GUILayout.Button(model.id, EditorHelper.ListSkin(model == item_)))
+            {
+                nextModel = model;
+            }
+        }
+
+        if (nextModel != null)
+        {
+            item_ = nextModel;
+        }
+
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawItem()
+    {
+        EditorGUILayout.BeginVertical(GUILayout.MaxWidth(400));
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("ID");
+        EditorGUILayout.Separator();
+        item_.id = EditorGUILayout.TextField(item_.id);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Type");
+        EditorGUILayout.Separator();
+        item_.itemType = (ItemType)EditorGUILayout.EnumPopup(item_.itemType);
+        EditorGUILayout.EndHorizontal();
+
+        if (item_.itemType == ItemType.Currency)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Currency");
+            EditorGUILayout.Separator();
+            item_.currency = (CurrencyID)EditorGUILayout.EnumPopup(item_.currency);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Count");
+        EditorGUILayout.Separator();
+        EditorHelper.DrawRange(item_.count);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal(); 
+        item_.icon = EditorHelper.IconField("Icon", item_.icon, itemSprites_, "Dungeon");
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.EndVertical();
+    }
 }

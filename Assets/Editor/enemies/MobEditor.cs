@@ -280,6 +280,12 @@ public class MobEditor : ConfigurationEditor.IEditorTab
 		}
 		EditorGUILayout.EndHorizontal ();
 
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Exp", EditorStyles.label);
+        EditorGUILayout.Separator();
+        currentModel_.exp = EditorGUILayout.DoubleField(currentModel_.exp);
+        EditorGUILayout.EndHorizontal();
+
 		foreach (var att in currentModel_.Stats) 
 		{
 			EditorGUILayout.BeginHorizontal ();

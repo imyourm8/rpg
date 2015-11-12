@@ -27,13 +27,17 @@ namespace LootQuest.Game.Units
 			stats_.Add (AS);
 
 			var str = new LootQuest.Game.Attributes.Attribute ().Init (LootQuest.Game.Attributes.AttributeID.Strength);
+            var dmg = new LootQuest.Game.Attributes.DamageDone().Init(LootQuest.Game.Attributes.AttributeID.Damage);
 			var dmgMax = new LootQuest.Game.Attributes.DamageDone ().Init (LootQuest.Game.Attributes.AttributeID.DamageMax);
 			var dmgMin = new LootQuest.Game.Attributes.DamageDone ().Init(LootQuest.Game.Attributes.AttributeID.DamageMin);
 
 			dmgMin.AddAttribute (str);
+            dmgMin.AddAttribute(dmg);
 			dmgMax.AddAttribute (str);
+            dmgMax.AddAttribute(dmg);
 
 			stats_.Add (str);
+            stats_.Add (dmg);
 			stats_.Add (dmgMin);
 			stats_.Add (dmgMax);
 
@@ -46,6 +50,11 @@ namespace LootQuest.Game.Units
 			spells_ = new LootQuest.Game.Spells.SpellManager (this);
 			spellSlots_ = new Dictionary<SlotStype, Spell> ();
 		}
+
+        public LevelManager LevelManager
+        {
+            get { return lvlManager_;  }
+        }
 
 		public void LoadSpell(string id)
 		{
@@ -140,8 +149,6 @@ namespace LootQuest.Game.Units
 		{
 			var health = entry.target.Stats.Get (LootQuest.Game.Attributes.AttributeID.Health);
 			health.ModifyValue (-entry.damage);
-
-			Debug.LogFormat ("Damage done: {0} by {1} health left {2}", entry.damage, this.ToString (), health.FinalValue);
 
 			if (health.FinalValue < 0)
 				Debug.Log ("Target died");

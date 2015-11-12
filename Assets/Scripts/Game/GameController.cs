@@ -23,7 +23,8 @@ namespace LootQuest.Game {
 		private List<Unit> unitCache_;
 		private HashSet<Entity> removeList_;
 		private HashSet<Entity> addList_;
-
+        protected GameRules.BaseRule rules_;
+        
 		public GameController()
 		{
 			entities_ = new List<Entity> ();
@@ -42,6 +43,12 @@ namespace LootQuest.Game {
 			AddAll();
 			UpdateLogic ();
     	}
+
+        public GameRules.BaseRule Rules
+        {
+            set { rules_ = value;  }
+            protected get { return rules_;  }
+        }
 
 		protected Camera GameCamera
 		{

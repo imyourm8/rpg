@@ -40,9 +40,9 @@ namespace LootQuest.Utils.ObjectPool
 		
 		public void Return(GameObject obj)
 		{
-			if (!objectsByPrefabs_.ContainsKey(obj))
+			//if (!objectsByPrefabs_.ContainsKey(obj))
 			{
-				throw new UnityException("Can't return example object!");
+				//throw new UnityException("Can't return example object!");
 			}
 			var prefab = objectsByPrefabs_ [obj];
 			GetPool(prefab).Return(obj);

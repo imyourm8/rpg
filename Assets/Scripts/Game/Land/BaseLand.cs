@@ -24,7 +24,7 @@ namespace LootQuest.Game.Land
 
 		public void Remove(Units.Entity entity)
 		{
-			(entity.View as GameObject).Detach ();
+			(entity.View.gameObject).Detach ();
 		}
 
 		public virtual void Update()

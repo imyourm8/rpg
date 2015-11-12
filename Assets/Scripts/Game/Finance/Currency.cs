@@ -7,7 +7,8 @@ namespace LootQuest.Game.Finance
 {
 	public enum CurrencyID
 	{
-		Gold
+		Gold,
+		Premium
 	}
 
 	public class Currency

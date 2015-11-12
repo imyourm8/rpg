@@ -21,6 +21,7 @@ namespace LootQuest.Game.Modes {
 		private GameObject landPrefab_;
 
 		private Hero hero_;
+        private Tower tower_;
 
 		protected override void UpdateLogic ()
 		{
@@ -30,7 +31,6 @@ namespace LootQuest.Game.Modes {
 		protected override void Prepare ()
 		{
 			base.Prepare ();
-
 			/*
 			var left = battlefield_.transform.InverseTransformPoint(gameCamBounds.min);
 			var right = battlefield_.transform.InverseTransformPoint(gameCamBounds.max);
@@ -49,21 +49,30 @@ namespace LootQuest.Game.Modes {
 			Add (hero);
 			hero.GroupID = 1;
 			hero.Move ();
+			hero_ = hero;
 
 			GameCamera.GetComponent<PlayerCameraFollower> ().SetTarget (hero.View);
 
-			LoadTower ();
+            Rules = new GameRules.ExpGameRules();
 		}
 
 		private void LoadTower()
 		{
-			StartCoroutine (StartSpawn ());
+            var towerLevel = 1;
+            var towerEntry = GameData.Towers.Instance.GetTower(towerLevel);
+
+            tower_ = new Tower();
+            tower_.Init(towerLevel, towerEntry);
+
+            spawner_.Init(tower_);
+
+			StartCoroutine (StartSpawn ());    
 		}
 
 		IEnumerator StartSpawn()
 		{
 			yield return new WaitForSeconds(1.0f);
-			spawner_.Init (1);
+            spawner_.Start();
 		}
 
 		protected override void OnEntityRemoved (Entity entity)
@@ -71,8 +80,11 @@ namespace LootQuest.Game.Modes {
 			base.OnEntityRemoved (entity);
 
 			Enemy enemy = entity as Enemy;
-			if (enemy != null && !enemy.IsAlive())
-				spawner_.OnEnemyKilled (enemy);
+            if (enemy != null && !enemy.IsAlive())
+            {
+                spawner_.OnEnemyKilled(enemy);
+                Rules.OnEnemyKilled(enemy, hero_);
+            }
 		}
 	}
 }

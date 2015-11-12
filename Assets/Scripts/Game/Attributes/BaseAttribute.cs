@@ -23,6 +23,11 @@ namespace LootQuest.Game.Attributes
 			CalculateValue ();
 		}
 
+        public void SetMultiplier(float m)
+        {
+            multiplier_ = m;
+        }
+
 		public void ModifyValue(float value)
 		{
 			value_ += value;

@@ -6,7 +6,7 @@ namespace LootQuest.Game.Attributes {
 	{
 		private float rawValue_;
 		private float finalValue_;
-		private List<Attribute> attributes_;
+		protected List<Attribute> attributes_;
 
 		public Attribute()
 		{

@@ -31,6 +31,7 @@ namespace LootQuest.GameData
 		public List<EnemySpellsEntry> spells;
 		public LootQuest.Game.Units.EnemyType type;
 		public int minionCount;
+        public double exp;
 
 		public EnemyEntry()
 		{
