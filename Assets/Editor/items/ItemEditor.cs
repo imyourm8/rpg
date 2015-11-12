@@ -22,15 +22,29 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
     private Vector2 scrollPosition_;
     private SpriteCollection itemSprites_;
 
+    public static string[] ItemNames = new string[0];
+
     public ItemEditor()
     { 
         itemSprites_ = Resources.Load<GameObject>("Prefabs/SpriteCollections/ItemIconsCollection").GetComponent<SpriteCollection>();
         LootQuest.GameData.Items.Instance.Load();
         items_ = LootQuest.GameData.Items.Instance.Data;
+        RefreshItems();
     }
 
     private void CheckItems()
     {}
+
+    private void RefreshItems()
+    {
+        ItemNames = new string[items_.Count];
+
+        int i = 0;
+        foreach (var item in items_)
+        {
+            ItemNames[i++] = item.id;
+        }
+    }
 
 	void ConfigurationEditor.IEditorTab.OnGUI ()
 	{
@@ -46,6 +60,7 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
         {
             items_.Remove(item_);
             item_ = null;
+            RefreshItems();
         }
 
         if (GUILayout.Button("Check"))
@@ -57,6 +72,7 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
         {
             item_ = new ItemEntry();
             items_.Add(item_);
+            RefreshItems();
         }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Separator();
@@ -104,7 +120,9 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("ID");
         EditorGUILayout.Separator();
+        var prevID = item_.id;
         item_.id = EditorGUILayout.TextField(item_.id);
+        if (prevID != item_.id) RefreshItems();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -122,15 +140,15 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
             EditorGUILayout.EndHorizontal();
         }
 
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Count");
         EditorGUILayout.Separator();
-        EditorHelper.DrawRange(item_.count);
-        EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal(); 
-        item_.icon = EditorHelper.IconField("Icon", item_.icon, itemSprites_, "Dungeon");
+        item_.icon = EditorHelper.SpriteField("Icon", item_.icon, itemSprites_);
         EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal(); 
+		item_.view = EditorHelper.SpriteField("View", item_.view, itemSprites_);
+		EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.EndVertical();
     }

@@ -10,6 +10,13 @@ namespace LootQuest.GameData
         public List<ItemEntry> Data = new List<ItemEntry>();
         private Dictionary<string, ItemEntry> hash_ = new Dictionary<string, ItemEntry>();
 
+        public ItemEntry GetItem(string id)
+        {
+            ItemEntry item = null;
+            hash_.TryGetValue(id, out item);
+            return item;
+        }
+
 		public void Load()
 		{
             TextAsset asset = Resources.Load("GameData/items.json") as TextAsset;
@@ -28,7 +35,6 @@ namespace LootQuest.GameData
                 if (itemData.HasField("view"))
                     item.view = itemData["view"].str;
                 item.itemType = (Game.Items.ItemType)itemData["type"].i;
-                Utils.RangeUtils.FromJson(item.count, itemData["count"]);
 
                 Data.Add(item);
                 hash_.Add(item.id, item);
@@ -47,7 +53,6 @@ namespace LootQuest.GameData
                 obj.Add(itemObj);
 
                 itemObj.AddField("id", item.id);
-                itemObj.AddField("count", Utils.RangeUtils.ToJson(item.count));
                 itemObj.AddField("type", (int)item.itemType);
                 itemObj.AddField("icon", item.icon);
                 itemObj.AddField("currency", (int)item.currency);

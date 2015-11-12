@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+
 using System.Collections;
+using System.Collections.Generic;
 
 namespace LootQuest
 {
@@ -22,6 +24,11 @@ namespace LootQuest
         public void AddSprite(Sprite sprite)
         {
             sprites[sprite.name] = sprite;
+        }
+
+        public IEnumerator<KeyValuePair<string, Sprite>> GetEnumerator()
+        {
+            return sprites.GetEnumerator();
         }
     }
 

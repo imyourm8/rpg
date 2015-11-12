@@ -5,9 +5,20 @@ namespace LootQuest.Game.Items
 {
 	public enum ItemType
 	{
-		Loot,
+		Armor,
+        Helmet,
+        Weapon,
 		Currency
 	}
+
+    public enum Rarity
+    {
+        Common,
+        Magic,
+        Rare,
+        Unique,
+        Mythic
+    }
 
 	public class Item 
 	{
@@ -15,5 +26,6 @@ namespace LootQuest.Game.Items
 		private string id_;
 		private Finance.CurrencyID currency_;
 		private ItemType itemType_;
+        private Rarity rarity_;
 	}
 }

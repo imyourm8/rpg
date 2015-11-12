@@ -14,8 +14,6 @@ namespace LootQuest.GameData
         public ItemType itemType;
         public string icon;
         public string view;
-        public Utils.Range<int> count = new Utils.Range<int>();
-
-        
+        public Utils.Range<int> levelRange = new Utils.Range<int>(); //at which levels pick this item if requested
 	}
 }

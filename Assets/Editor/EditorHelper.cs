@@ -17,6 +17,7 @@ public class EditorHelper
 	public static GUILayoutOption[] PlusButton;
 	public static GUILayoutOption[] TrashCanButton;
 	public static GUILayoutOption[] Line = new GUILayoutOption[]{GUILayout.ExpandWidth (true), GUILayout.Height (1)};
+    public static Sprite SpritePickerPicked = null;
 
 	public static void Init()
 	{
@@ -91,17 +92,13 @@ public class EditorHelper
 		return val ? GUI.skin.box : GUI.skin.button;
 	}
 
-    static int lastControl;
-    static public string IconField(string label, string icon, LootQuest.SpriteCollection sprites, string filter, int height = 100, int width = 0)
+    static public string SpriteField(string label, string icon, LootQuest.SpriteCollection sprites)
     {
-        if (sprites == null) return ""; 
+        if (sprites == null) return "";
+
         Sprite spr = sprites.GetSprite(icon);
-
-        //EditorGUIUtility.labelWidth = 0;
-
+        int height = 50, width = 0;
         EditorGUILayout.BeginHorizontal(width == 0 ? GUILayout.MinHeight(0) : GUILayout.Width(width));
-
-        //GUILayout.FlexibleSpace();
 
         GUI.skin.label.alignment = TextAnchor.MiddleRight;
         EditorGUILayout.LabelField(label, GUI.skin.label, width == 0 ? GUILayout.MinHeight(0) : GUILayout.Width((width - height) * 0.3f));
@@ -109,7 +106,82 @@ public class EditorHelper
 
         EditorGUILayout.LabelField(spr == null ? "" : spr.name, GUI.skin.textField, width == 0 ? GUILayout.MinHeight(0) : GUILayout.Width((width - height) * 0.7f));
 
-        //EditorGUILayout.Separator();
+        Rect rect = EditorGUILayout.BeginVertical(GUILayout.Height(height), GUILayout.Width(height));
+        int controlID = EditorGUIUtility.GetControlID(FocusType.Passive);
+        EditorGUILayout.Separator();
+        if (GUI.Button(new Rect(rect.x + rect.width - rect.height, rect.y, rect.height, rect.height), "", GUI.skin.box))
+        {
+            lastControl = controlID;
+            SpritePicker.Show(sprites, icon, controlID);
+        }
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Separator();
+
+		float x = rect.x + rect.width - rect.height + 2;
+		float y = rect.y + 2;
+		float h = rect.height - 4;
+		
+		if (spr != null)
+		{
+			Texture t = spr.texture;
+			Rect tr = spr.textureRect;
+			
+			float tx = x;
+			float ty = y;
+			float tw = tr.width;
+			float th = tr.height;
+			if (tw < th)
+			{
+				tw = h * tw / th;
+				tx += (h - tw) / 2;
+				th = h;
+			}
+			else if (tw > th)
+			{
+				th = h * th / tw;
+				ty += (h - th) / 2;
+				tw = h;
+			}
+			else
+			{
+				tw = h;
+				th = h;
+			}
+			
+			Rect r = new Rect(tr.x / t.width, tr.y / t.height, tr.width / t.width, tr.height / t.height);
+			
+			GUI.DrawTextureWithTexCoords(new Rect(tx, ty, tw, th), t, r);
+		}
+
+        if (lastControl == controlID)
+        {
+            string commandName = Event.current.commandName;
+            spr = SpritePickerPicked;
+            if (commandName == "ObjectSelectorUpdated")
+            {
+                window.Repaint();
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        return spr == null ? "" : spr.name;
+    }
+
+    static int lastControl;
+    static public string IconField(string label, string icon, LootQuest.SpriteCollection sprites, string filter, int height = 100, int width = 0)
+    {
+        if (sprites == null) return ""; 
+        Sprite spr = sprites.GetSprite(icon);
+
+        EditorGUILayout.BeginHorizontal(width == 0 ? GUILayout.MinHeight(0) : GUILayout.Width(width));
+
+        GUI.skin.label.alignment = TextAnchor.MiddleRight;
+        EditorGUILayout.LabelField(label, GUI.skin.label, width == 0 ? GUILayout.MinHeight(0) : GUILayout.Width((width - height) * 0.3f));
+        GUI.skin.label.alignment = TextAnchor.MiddleLeft;
+
+        EditorGUILayout.LabelField(spr == null ? "" : spr.name, GUI.skin.textField, width == 0 ? GUILayout.MinHeight(0) : GUILayout.Width((width - height) * 0.7f));
 
         Rect rect = EditorGUILayout.BeginVertical(GUILayout.Height(height), GUILayout.Width(height));
         int controlID = EditorGUIUtility.GetControlID(FocusType.Passive);

@@ -7,6 +7,5 @@ namespace LootQuest.Game.Items
 	//assigns items to hero
 	public class LootManager 
 	{
-
 	}
 }

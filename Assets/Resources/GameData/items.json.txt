@@ -1,1 +1,0 @@
-[{"id":"gold","count":{"min":0,"max":0},"type":1,"icon":"DungeonCrawl_ProjectUtumnoTileset_1530","currency":0}]
