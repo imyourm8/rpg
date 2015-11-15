@@ -6,8 +6,14 @@ namespace LootQuest.GameData
 	public class AttributeTemplate
 	{
 		public Game.Attributes.AttributeID id;
-		public float minValue = 0.0f;
-		public float maxValue = 0.0f;
+        public LootQuest.Utils.Range<float> value = new Utils.Range<float>();
+        public LootQuest.Utils.Range<float> percentValue = new Utils.Range<float>();
+
+        //for item generation
+        public int weight = 0;
+        public int accWeight = 0;
+
+        public bool expanded = false;
 
 		public AttributeTemplate(Game.Attributes.AttributeID attID)
 		{
@@ -16,7 +22,8 @@ namespace LootQuest.GameData
 
 		public void Generate(Game.Attributes.Attribute att)
 		{
-			att.SetValue (Random.Range (minValue, maxValue));
+			att.SetValue (value.Randomize());
+            att.SetPercentValue(percentValue.Randomize());
 		}
 	}
 }

@@ -91,6 +91,7 @@ namespace LootQuest.GameData
 
                 Data.Add(table);
                 hash_.Add(table.id, table);
+                table.CalculateDropWeights();
             }
 
             GenerateItemDropWeights();

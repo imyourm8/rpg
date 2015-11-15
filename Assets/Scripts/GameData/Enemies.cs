@@ -56,8 +56,14 @@ namespace LootQuest.GameData
 						if (template == null) continue;
 						var statStr = statID.ToString();
 						var statData = stats[statStr];
-						template.minValue = statData[statStr+"_min"].f;
-						template.maxValue = statData[statStr+"_max"].f;
+						template.value.Min = statData[statStr+"_min"].f;
+						template.value.Max = statData[statStr+"_max"].f;
+
+                        if (statData.HasField(statStr + "_minp"))
+                        {
+                            template.percentValue.Min = statData[statStr + "_minp"].f;
+                            template.percentValue.Max = statData[statStr + "_maxp"].f;
+                        }
 					}
 
 					if (enemy.HasField("spells"))
@@ -117,8 +123,10 @@ namespace LootQuest.GameData
 				{
 					JSONObject range = new JSONObject();
 					var statID = stat.id.ToString();
-					range.AddField(statID+"_min", stat.minValue);
-					range.AddField(statID+"_max", stat.maxValue);
+					range.AddField(statID + "_min", stat.value.Min);
+					range.AddField(statID + "_max", stat.value.Max);
+                    range.AddField(statID + "_minp", stat.percentValue.Min);
+                    range.AddField(statID + "_maxp", stat.percentValue.Max);
 					stats.AddField(statID, range);
 				}
 

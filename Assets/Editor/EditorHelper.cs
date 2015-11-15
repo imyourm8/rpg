@@ -35,8 +35,32 @@ public class EditorHelper
 
 	public static void DrawRange(LootQuest.GameData.AttributeTemplate att)
 	{
-		att.minValue = EditorGUILayout.FloatField (att.minValue);
-		att.maxValue = EditorGUILayout.FloatField (att.maxValue);
+        EditorGUILayout.BeginVertical();
+
+        att.expanded = EditorGUILayout.Foldout(att.expanded, att.id.ToString());
+
+        if (att.expanded)
+        {
+            EditorGUI.indentLevel++;
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Base Value");
+            att.value.Min = EditorGUILayout.FloatField(att.value.Min);
+            EditorGUILayout.LabelField("-");
+            att.value.Max = EditorGUILayout.FloatField(att.value.Max);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Percent Value");
+            att.percentValue.Min = EditorGUILayout.FloatField(att.percentValue.Min);
+            EditorGUILayout.LabelField("-");
+            att.percentValue.Max = EditorGUILayout.FloatField(att.percentValue.Max);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUI.indentLevel--;
+        }
+
+        EditorGUILayout.EndVertical();
 	}
 
 	public static void DrawRange(Range<float> range)

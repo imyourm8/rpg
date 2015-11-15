@@ -150,6 +150,11 @@ public class ItemEditor : ConfigurationEditor.IEditorTab
 		item_.view = EditorHelper.SpriteField("View", item_.view, itemSprites_);
 		EditorGUILayout.EndHorizontal();
 
+        foreach (var att in item_.Stats)
+        {
+            EditorHelper.DrawRange(att);
+        }
+
         EditorGUILayout.EndVertical();
     }
 }
