@@ -28,6 +28,11 @@ namespace LootQuest.Game.Attributes
             multiplier_ = m;
         }
 
+        public void SetPercentValue(float v)
+        {
+            percentValue_ = v;
+        }
+
 		public void ModifyValue(float value)
 		{
 			value_ += value;

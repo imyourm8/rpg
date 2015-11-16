@@ -302,11 +302,7 @@ public class MobEditor : ConfigurationEditor.IEditorTab
 
         foreach (var att in currentModel_.Stats) 
 		{
-			EditorGUILayout.BeginHorizontal ();
-			GUILayout.Label (att.id.ToString(), EditorStyles.label);
-			EditorGUILayout.Separator ();
-			EditorHelper.DrawRange(att);
-			EditorGUILayout.EndHorizontal ();
+            EditorHelper.DrawRange(att);
 		}
 
 		EditorGUILayout.BeginHorizontal ();

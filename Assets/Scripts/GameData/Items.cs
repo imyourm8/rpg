@@ -3,18 +3,28 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+using LootQuest.Game.Items;
+
 namespace LootQuest.GameData
 {
 	public class Items : Utils.Singleton<Items> 
 	{
         public List<ItemEntry> Data = new List<ItemEntry>();
         private Dictionary<string, ItemEntry> hash_ = new Dictionary<string, ItemEntry>();
+        private Dictionary<ItemType, List<ItemEntry>> itemsByType_ = new Dictionary<ItemType, List<ItemEntry>>();
 
         public ItemEntry GetItem(string id)
         {
             ItemEntry item = null;
             hash_.TryGetValue(id, out item);
             return item;
+        }
+
+        public List<ItemEntry> GetItemsByType(ItemType type)
+        {
+            List<ItemEntry> byType = null;
+            itemsByType_.TryGetValue(type, out byType);
+            return byType;
         }
 
 		public void Load()
@@ -38,6 +48,13 @@ namespace LootQuest.GameData
 
                 Data.Add(item);
                 hash_.Add(item.id, item);
+
+                if (!itemsByType_.ContainsKey(item.itemType))
+                {
+                    itemsByType_.Add(item.itemType, new List<ItemEntry>());
+                }
+
+                itemsByType_[item.itemType].Add(item);
             }
         }
 
