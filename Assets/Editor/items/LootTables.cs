@@ -23,56 +23,159 @@ public class LootTables : ConfigurationEditor.IEditorTab
 
     private List<LootTableEntry> tables_;
     private LootTableEntry table_;
+    private List<LootTableEntry> filteredTables_;
+    private List<string> tableGroups_;
+    private string selectedGroup_;
     private Vector2 scrollPos_;
+    private Vector2 groupScrollPos_;
     private Vector2 dropScrollPos_;
+
+    public static string[] TableNames;
 
     public LootTables()
     {
         LootQuest.GameData.LootTables.Instance.Load();
+        filteredTables_ = new List<LootTableEntry>();
+        tableGroups_ = new List<string>();
         tables_ = LootQuest.GameData.LootTables.Instance.Data;
+
+        HashSet<string> uniqueGroups = new HashSet<string>();
+        foreach (var table in tables_)
+        {
+            uniqueGroups.Add(table.group);
+        }
+
+        foreach (var group in uniqueGroups)
+        {
+            tableGroups_.Add(group);
+        }
+
+        RefreshTableNames();
     }
 
-	void ConfigurationEditor.IEditorTab.OnGUI () 
-	{
-        EditorGUILayout.BeginVertical();
+    void RefreshTableNames()
+    {
+        TableNames = new string[tables_.Count];
+        int count = tables_.Count;
+        for (int i = 0; i < count; ++i)
+        {
+            TableNames[i] = tables_[i].id;
+        }
+    }
 
+    void DrawTopMenu()
+    {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Save"))
         {
             LootQuest.GameData.LootTables.Instance.Save();
         }
-
-        if (table_ != null && GUILayout.Button("Remove Table"))
-        {
-            tables_.Remove(table_);
-            table_ = null;
-        }
+        
 
         if (GUILayout.Button("Check"))
         {
             //CheckItems();
         }
 
-        if (GUILayout.Button("Add Table"))
+        if (GUILayout.Button("Add Group"))
         {
-            table_ = new LootTableEntry();
-            tables_.Add(table_);
+            selectedGroup_ = "<unique_id>";
+            tableGroups_.Add(selectedGroup_);
         }
+
+        if (selectedGroup_ != null && GUILayout.Button("Remove Group"))
+        {
+            tableGroups_.Remove(selectedGroup_);
+            tables_.RemoveAll(x => x.group == selectedGroup_);
+            selectedGroup_ = null;
+        }
+
+        if (selectedGroup_ != null)
+        {
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+
+            if (GUILayout.Button("Add Table"))
+            {
+                table_ = new LootTableEntry();
+                table_.group = selectedGroup_;
+                tables_.Add(table_);
+                RefreshTableNames();
+            }
+
+            if (table_ != null && GUILayout.Button("Remove Table"))
+            {
+                tables_.Remove(table_);
+                table_ = null;
+                RefreshTableNames();
+            }
+
+            if (table_ != null && GUILayout.Button("Copy Table"))
+            {
+                table_ = new LootTableEntry(table_);
+                tables_.Add(table_);
+            }
+        }
+
         EditorGUILayout.EndHorizontal();
+    }
+
+	void ConfigurationEditor.IEditorTab.OnGUI () 
+	{
+        EditorGUILayout.BeginVertical();
+
+        DrawTopMenu();
+
         EditorGUILayout.Separator();
         EditorGUILayout.BeginHorizontal();
 
-        DrawTableList();
+        DrawTableGroups();
 
-        if (table_ != null)
+        if (selectedGroup_ != null)
         {
-            DrawTable();
+            DrawTableList();
+
+            if (table_ != null)
+            {
+                DrawTable();
+            }
         }
 
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.EndVertical();
 	}
+
+    void DrawTableGroups()
+    {
+        groupScrollPos_ = EditorGUILayout.BeginScrollView(groupScrollPos_, GUILayout.MaxWidth(400));
+
+        string nextGroup = null;
+        int total = tableGroups_.Count;
+        for (int i = 0; i < total; ++i)
+        {
+            string group = tableGroups_[i];
+            if (selectedGroup_ == group)
+            {
+                var prevSelectedGroup = selectedGroup_;
+                selectedGroup_ = EditorGUILayout.TextField(selectedGroup_);
+                if (prevSelectedGroup != selectedGroup_)
+                {
+                    tables_.FindAll(x => x.group == prevSelectedGroup).ForEach(x => x.group = selectedGroup_);
+                    tableGroups_[tableGroups_.IndexOf(prevSelectedGroup)] = selectedGroup_;
+                }
+            }
+            else if (GUILayout.Button(group, EditorHelper.ListSkin(true)))
+            {
+                nextGroup = group;
+            }
+        }
+
+        if (nextGroup != null)
+            selectedGroup_ = nextGroup;
+
+        EditorGUILayout.EndScrollView();
+    }
 
     void DrawTableList()
     {
@@ -83,6 +186,7 @@ public class LootTables : ConfigurationEditor.IEditorTab
         for (int i = 0; i < total; ++i)
         {
             var model = tables_[i];
+            if (model.group != selectedGroup_) continue;
             string id = model.id + " Level: " + model.level.Min.ToString() + "-" + model.level.Max.ToString(); 
             if (GUILayout.Button(id, EditorHelper.ListSkin(model == table_)))
             {
@@ -105,7 +209,11 @@ public class LootTables : ConfigurationEditor.IEditorTab
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("ID");
         EditorGUILayout.Separator();
+        var prevID = table_.id;
         table_.id = EditorGUILayout.TextField(table_.id);
+        if (prevID != table_.id)
+            RefreshTableNames();
+        EditorGUILayout.LabelField(selectedGroup_);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();

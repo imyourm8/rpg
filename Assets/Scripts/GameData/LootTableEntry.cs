@@ -16,6 +16,16 @@ namespace LootQuest.GameData
         public string table = ""; //if not empty load drop from another table
 
         public int totalWeight = 0;
+
+        public LootTableItemDrop() { }
+
+        public LootTableItemDrop(LootTableItemDrop other)
+        {
+            weight = other.weight;
+            item = other.item;
+            level = other.level;
+            table = other.table;
+        }
     }
 
     public class LootTableItemTypeDrop
@@ -27,11 +37,18 @@ namespace LootQuest.GameData
         {
             rarity = r;
         }
+
+        public LootTableItemTypeDrop(LootTableItemTypeDrop r)
+        {
+            rarity = r.rarity;
+            weight = r.weight;
+        }
     }
 
     public class LootTableEntry
     {
         public string id = "<id>";
+        public string group = "";
         public List<LootTableItemDrop> items = new List<LootTableItemDrop>();
         public Utils.Range<int> level = new Utils.Range<int>();
         public List<LootTableItemTypeDrop> rarity = new List<LootTableItemTypeDrop>();
@@ -44,6 +61,25 @@ namespace LootQuest.GameData
             {
                 rarity.Add(new LootTableItemTypeDrop(iType));
             }
+        }
+
+        public LootTableEntry(LootTableEntry other)
+        {
+            foreach (var r in other.rarity)
+            {
+                rarity.Add(new LootTableItemTypeDrop(r));
+            }
+
+            id = other.id;
+            group = other.group;
+            level = other.level.Copy();
+
+            foreach (var item in other.items)
+            {
+                items.Add(new LootTableItemDrop(item));
+            }
+
+
         }
     }
 }

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 14b98c660ac58134ea45170bc8ed83ca
-timeCreated: 1447103510
+timeCreated: 1447548930
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -149,6 +149,7 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
+  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
@@ -348,8 +349,8 @@ TextureImporter:
         y: 192
         width: 16
         height: 16
-      alignment: 2
-      pivot: {x: .5, y: 1}
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: basictiles_2_19
       rect:

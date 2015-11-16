@@ -32,6 +32,7 @@ namespace LootQuest.GameData
                 obj.Add(tableData);
 
                 tableData.AddField("id", table.id);
+                tableData.AddField("group", table.group);
                 tableData.AddField("level", Utils.RangeUtils.ToJson(table.level));
 
                 JSONObject itemData = new JSONObject(JSONObject.Type.ARRAY);
@@ -76,6 +77,7 @@ namespace LootQuest.GameData
             {
                 var table = new LootTableEntry();
                 table.id = tableData["id"].str;
+                table.group = tableData["group"].str;
                 Utils.RangeUtils.FromJson(table.level, tableData["level"]);
 
                 foreach (var dropData in tableData["drop"].list)

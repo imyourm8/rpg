@@ -85,6 +85,11 @@ namespace LootQuest.GameData
                         model.exp = (double)enemy["exp"].f;
                     }
 
+                    if (enemy.HasField("drop_table"))
+                    {
+                        model.drop_table = enemy["drop_table"].str;
+                    }
+
 					Data.Add(model);  
 					hash_.Add(model.ID, model); 
 				}
@@ -105,7 +110,8 @@ namespace LootQuest.GameData
 				enemyObj.AddField("id", enemy.ID);
 				enemyObj.AddField("ai", (int)enemy.ai);
                 enemyObj.AddField("exp", (float)enemy.exp);
-				enemyObj.AddField("auto_attack", enemy.autoAttackAbility);
+                enemyObj.AddField("drop_table", enemy.drop_table);
+                enemyObj.AddField("auto_attack", enemy.autoAttackAbility);
 
 				if (enemy.viewPrefab != null)
 					enemyObj.AddField("view", enemy.viewPrefab.GetPrefabPath());

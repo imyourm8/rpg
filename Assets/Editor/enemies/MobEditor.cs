@@ -15,8 +15,9 @@ public class MobEditor : ConfigurationEditor.IEditorTab
 	private EnemyEntry currentModel_;
 	private List<EnemyEntry> models_;
 	private int selectedSpell_;
+    private int selectedTable_;
 
-	public Dictionary<LootQuest.Game.Units.EnemyType, string[]> EnemyNames = new Dictionary<LootQuest.Game.Units.EnemyType, string[]>();
+    public Dictionary<LootQuest.Game.Units.EnemyType, string[]> EnemyNames = new Dictionary<LootQuest.Game.Units.EnemyType, string[]>();
 	public Dictionary<LootQuest.Game.Units.EnemyType, Dictionary<string, EnemyEntry>> Enemies = new Dictionary<LootQuest.Game.Units.EnemyType, Dictionary<string, EnemyEntry>> ();
 
 	private static MobEditor instance_;
@@ -246,7 +247,8 @@ public class MobEditor : ConfigurationEditor.IEditorTab
 		if (nextModel != null) 
 		{
 			currentModel_ = nextModel;
-		}
+            selectedTable_ = Array.IndexOf(LootTables.TableNames, currentModel_.drop_table);
+        }
 
 		EditorGUILayout.EndScrollView ();
 
@@ -286,7 +288,19 @@ public class MobEditor : ConfigurationEditor.IEditorTab
         currentModel_.exp = EditorGUILayout.DoubleField(currentModel_.exp);
         EditorGUILayout.EndHorizontal();
 
-		foreach (var att in currentModel_.Stats) 
+        if (LootTables.TableNames.Length > 0)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Drop table", EditorStyles.label);
+            EditorGUILayout.Separator();
+              
+            selectedTable_ = EditorGUILayout.Popup(selectedTable_, LootTables.TableNames);
+            if (selectedTable_ > -1)
+                currentModel_.drop_table = LootTables.TableNames[selectedTable_];
+            EditorGUILayout.EndHorizontal();
+        }
+
+        foreach (var att in currentModel_.Stats) 
 		{
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label (att.id.ToString(), EditorStyles.label);

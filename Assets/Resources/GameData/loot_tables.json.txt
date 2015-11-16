@@ -1,1 +1,1 @@
-[{"id":"common_table","level":{"min":1,"max":10},"drop":[{"w":1,"t":3,"table":"","level":0}]}]
+[{"id":"simple_table","group":"common_drop","level":{"min":1,"max":10},"drop":[{"w":1,"t":3,"table":"","level":0}]}]

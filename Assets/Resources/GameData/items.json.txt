@@ -1,0 +1,1 @@
+[{"id":"gold","type":3,"icon":"DungeonCrawl_ProjectUtumnoTileset_1530","currency":0}]

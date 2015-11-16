@@ -125,8 +125,13 @@ namespace LootQuest.Game
 					var enemy = UnitExtensions.CreateEnemy(enemyEntry);
 					enemy.Direction = Entity.ToRight.Scale(direction_);
 
-					float spawnPosition = Random.Range(0.0f, spawnPointFluctuation_);
-					enemy.X = camBounds.max.x + camBounds.size.x*spawnOffset_ + spawnPosition;
+                    float upperSpawnPointFluctuation = spawnPointFluctuation_;
+                    //use enemy range to make offset 
+                    upperSpawnPointFluctuation += enemy.Stats.GetFinValue(Attributes.AttributeID.AttackRange);
+                    float lowerSpawnPointFluctuation = upperSpawnPointFluctuation * 0.4f;
+                    float spawnPosition = Random.Range(lowerSpawnPointFluctuation, upperSpawnPointFluctuation);
+
+                    enemy.X = camBounds.max.x + camBounds.size.x*spawnOffset_ + spawnPosition;
 
 					enemy.ScaleStatsWithTower(tower_);
 

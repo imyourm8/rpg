@@ -32,6 +32,7 @@ namespace LootQuest.GameData
 		public LootQuest.Game.Units.EnemyType type;
 		public int minionCount;
         public double exp;
+        public string drop_table;
 
 		public EnemyEntry()
 		{
